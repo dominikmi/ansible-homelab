@@ -1,2 +1,2 @@
-# ansible-nukelab
-ansible scripts for homelab
+### ansible-nukelab
+ansible & scripts for setting up and maintaining a homelab
