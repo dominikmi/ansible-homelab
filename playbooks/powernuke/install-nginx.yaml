@@ -1,0 +1,9 @@
+---
+- hosts: nukeserver
+  tasks:
+    - name: Install nginx
+      dnf:
+        name: nginx
+        state: latest
+        update_cache: True
+      become: yes

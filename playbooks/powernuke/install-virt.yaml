@@ -1,0 +1,9 @@
+---
+- hosts: nukeserver
+  tasks:
+    - name: Install virtualization
+      dnf:
+        name: @virtualization
+        state: latest
+        update_cache: True
+      become: yes

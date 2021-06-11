@@ -1,3 +1,9 @@
+#ansible
+hosts
+*.conf
+.history
+.vscode
+
 # Logs
 logs
 *.log

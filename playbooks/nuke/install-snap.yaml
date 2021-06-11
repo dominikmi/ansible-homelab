@@ -1,0 +1,16 @@
+---
+- hosts: nukeserver
+  tasks:
+    - name: Install snapd
+      dnf:
+        name: snapd
+        state: latest
+        update_cache: True
+      become: yes
+
+    - name: Start snapd service
+      ansible.builtin.systemd:
+        name: snapd
+        state: started
+        enabled: yes
+      become: yes
