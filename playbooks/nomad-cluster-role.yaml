@@ -1,7 +1,6 @@
 ---
 - name: use nomad-cluster-node role playbook
   hosts: labhosts
-  user: hobbes
   become: true
 
   roles:

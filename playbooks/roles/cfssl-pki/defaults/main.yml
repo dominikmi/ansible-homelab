@@ -1,0 +1,4 @@
+---
+# vars file for cfssl-pki
+cfssl_github_uri: "github.com/cloudflare/cfssl/cmd/..."
+

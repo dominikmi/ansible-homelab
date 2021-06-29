@@ -1,0 +1,8 @@
+---
+- name: use cfssl-pki role playbook
+  hosts: nuke
+  become: true
+
+  roles:
+    - role: cfssl-pki
+

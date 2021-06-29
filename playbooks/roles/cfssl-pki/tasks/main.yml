@@ -1,0 +1,11 @@
+---
+# tasks file for cfssl-pki
+
+- name: Install go
+  yum: 
+    name: go
+    state: latest
+    update_cache: true
+
+- name: Downloading & installing cfssl binaries
+  ansible.builtin.shell: go get {{ cfssl_github_uri }}
