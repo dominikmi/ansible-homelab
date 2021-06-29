@@ -5,7 +5,7 @@ hosts
 *.history
 *.vscode
 vault.yml
-setup-sudoers.yaml
+setup-sudouser.yaml
 
 # Logs
 logs
