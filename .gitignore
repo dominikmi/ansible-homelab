@@ -1,8 +1,11 @@
 #ansible
 hosts
 *.conf
-.history
-.vscode
+*.cfg
+*.history
+*.vscode
+vault.yml
+setup-sudoers.yaml
 
 # Logs
 logs

@@ -1,0 +1,23 @@
+---
+# handlers file for nomad-cluster-node
+
+- name: restart_docker
+  ansible.builtin.service: 
+    name: docker 
+    state: restarted
+
+- name: restart_nomad
+  ansible.builtin.service:
+    name: nomad
+    state: restarted
+
+- name: restart_consul
+  ansible.builtin.service:
+    name: consul
+    state: restarted
+
+- name: restart_vault
+  ansible.builtin.service:
+    name: vault
+    state: restarted
+

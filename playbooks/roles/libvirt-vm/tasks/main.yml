@@ -1,0 +1,10 @@
+---
+# tasks file for libvirt-vm
+
+- name: create VM
+  hosts: powernuke
+  become: true
+  
+  tasks:
+    - name: set up a VM disk
+      command: 

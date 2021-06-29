@@ -1,0 +1,55 @@
+# This is nomad configuration, last built: {{ ansible_date_time.date }} {{ ansible_date_time.time }} {{ ansible_date_time.tz }}
+bind_addr = "0.0.0.0" # the default
+data_dir  = "{{ nomad_data_dir }}"
+
+advertise {
+  http = "{{ ansible_default_ipv4.address }}"
+  rpc  = "{{ ansible_default_ipv4.address }}"
+  serf = "{{ ansible_default_ipv4.address }}:5648" # non-default ports may be specified
+}
+
+server {
+  {% if nomad_node == 'server' %}
+  enable = true
+  bootstrap_expect = 1
+  {% elif nomad_node == 'both' %}
+  enable = true
+  bootstrap_expect = 1
+  {% else %}
+  enable = false
+  {% endif %}
+}
+
+client {
+  {% if nomad_node == 'client' %}
+  enabled       = true
+  network_speed = 10
+  servers = ["{{ nomad_server }}:4647"]
+  {% elif nomad_node == 'both' %}
+  enabled       = true
+  network_speed = 10
+  servers = ["{{ nomad_server }}:4647"]
+  {% endif %}
+}
+
+plugin "raw_exec" {
+  config {
+    enabled = true
+  }
+}
+
+consul {
+  address = "{{ ansible_default_ipv4.address }}:8500"
+}
+
+tls {
+  http = true
+  rpc  = true
+
+  ca_file   = "/usr/local/share/ca-certificates/intermediate_ca.crt"
+  cert_file = "/etc/ssl/certs/{{ ansible_fqdn }}-peer.pem"
+  key_file  = "/etc/ssl/private/{{ ansible_fqdn }}-peer-key.pem"
+
+  verify_server_hostname = false
+  verify_https_client    = false
+}

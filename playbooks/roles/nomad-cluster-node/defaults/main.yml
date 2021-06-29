@@ -1,0 +1,4 @@
+---
+# defaults file for nomad-cluster-node
+
+lsb_release: focal
