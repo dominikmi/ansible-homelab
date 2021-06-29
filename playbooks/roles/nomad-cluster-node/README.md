@@ -11,7 +11,7 @@ For now, it's written for Ubuntu 20.04 LTS.
 Role Variables
 --------------
 
-There are just a couple of roles now.
+There are just a couple of variables for this role now.
 
 - `nomad_server`: <IP_of_your_nomad_server>
 - `nomad_data_dir`: </path/to/your/nomad/data>
