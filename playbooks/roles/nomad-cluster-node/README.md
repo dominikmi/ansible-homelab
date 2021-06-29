@@ -13,10 +13,10 @@ Role Variables
 
 There are just a couple of roles now.
 
-`nomad_server`: <IP_of_your_nomad_server>
-`nomad_data_dir`: </path/to/your/nomad/data>
-`nomad_node`: client|server|both
-`consul_server`: <IP_of_your_consul_server>
+- `nomad_server`: <IP_of_your_nomad_server>
+- `nomad_data_dir`: </path/to/your/nomad/data>
+- `nomad_node`: client|server|both
+- `consul_server`: <IP_of_your_consul_server>
 
 Dependencies
 ------------
