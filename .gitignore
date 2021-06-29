@@ -5,7 +5,7 @@ hosts
 *.history
 *.vscode
 vault.yml
-playbooks/setup-sudouser.yaml
+setup-sudouser.yaml
 
 # Logs
 logs
