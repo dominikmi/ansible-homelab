@@ -10,13 +10,13 @@ advertise {
 
 server {
   {% if nomad_node == 'server' %}
-  enable = true
+  enabled = true
   bootstrap_expect = 1
   {% elif nomad_node == 'both' %}
-  enable = true
+  enabled = true
   bootstrap_expect = 1
   {% else %}
-  enable = false
+  enabled = false
   {% endif %}
 }
 
@@ -29,6 +29,8 @@ client {
   enabled       = true
   network_speed = 10
   servers = ["{{ nomad_server }}:4647"]
+  {% else %} 
+  enabled = false
   {% endif %}
 }
 
