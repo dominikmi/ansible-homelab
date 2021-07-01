@@ -1,0 +1,17 @@
+{
+  "CN": "{{ cfssl_ca_cn }}",
+  "key": {
+    "algo": "{{ cfssl_ca_key_algo }}",
+    "size": {{ cfssl_ca_key_size }}
+  },
+  "names": [
+  {
+    "C": "{{ cfssl_ca_names_c }}",
+    "L": "{{ cfssl_ca_names_l }}",
+    "O": "{{ cfssl_ca_names_o }}",
+    "OU": "{{ cfssl_ca_names_ou }}",
+    "ST": "{{ cfssl_ca_names_st }}"
+  }
+ ]
+}
+

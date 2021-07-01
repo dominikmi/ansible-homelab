@@ -1,0 +1,54 @@
+{
+  "signing": {
+    "default": {
+      "expiry": "{{ cfssl_default_expiry }}"
+    },
+    "profiles": {
+      "intermediate_ca": {
+        "usages": [
+            "{{ cfssl_intermediate_usage[0] }}",
+            "{{ cfssl_intermediate_usage[1] }}",
+            "{{ cfssl_intermediate_usage[2] }}",
+            "{{ cfssl_intermediate_usage[3] }}",
+            "{{ cfssl_intermediate_usage[4] }}",
+            "{{ cfssl_intermediate_usage[5] }}",
+            "{{ cfssl_intermediate_usage[6] }}"
+        ],
+        "expiry": "{{ cfssl_default_expiry }}",
+        "ca_constraint": {
+            "is_ca": true,
+            "max_path_len": 0, 
+            "max_path_len_zero": true
+        }
+      },
+      "peer": {
+        "usages": [
+            "{{ cfssl_peer_usage[0] }}",
+            "{{ cfssl_peer_usage[1] }}",
+            "{{ cfssl_peer_usage[2] }}", 
+            "{{ cfssl_peer_usage[3] }}",
+            "{{ cfssl_peer_usage[4] }}"
+        ],
+        "expiry": "{{ cfssl_default_expiry }}"
+      },
+      "server": {
+        "usages": [
+          "{{ cfssl_server_usage[0] }}",
+          "{{ cfssl_server_usage[0] }}",
+          "{{ cfssl_server_usage[0] }}",
+          "{{ cfssl_server_usage[0] }}"
+        ],
+        "expiry": "{{ cfssl_default_expiry }}"
+      },
+      "client": {
+        "usages": [
+          "{{ cfssl_client_usage[0] }}",
+          "{{ cfssl_client_usage[1] }}",
+          "{{ cfssl_client_usage[2] }}", 
+          "{{ cfssl_client_usage[3] }}"
+        ],
+        "expiry": "{{ cfssl_default_expiry }}"
+      }
+    }
+  }
+}

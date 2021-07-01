@@ -9,3 +9,24 @@
 
 - name: Downloading & installing cfssl binaries
   ansible.builtin.shell: go get {{ cfssl_github_uri }}
+
+- name: Create ssl/config folder in /opt
+  file:
+    path: "{{ cfssl_config_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+    recurse: yes
+
+- name: Copy basic configs ca, intermediate and cfssl into /opt/ssl/config
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: '0644'
+  loop:
+    - { src: 'roles/cfssl-pki/templates/{{ cfssl_interm_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_interm_config_file }}' }
+    - { src: 'roles/cfssl-pki/templates/{{ cfssl_ca_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_ca_config_file }}' }
+    - { src: 'roles/cfssl-pki/templates/{{ cfssl_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_config_file }}' }
+  changed_when: true
+
