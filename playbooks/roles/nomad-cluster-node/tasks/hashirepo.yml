@@ -1,0 +1,38 @@
+# Installs Hashicorp repo for Nomad, Consul and Vault
+
+# If distros are Ubuntu/Debian
+
+- name: add apt key of Hashicorp repo in Ubuntu/Debian
+  apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    state: present
+  when: ansible_distribution == 'Ubuntu'
+
+- name: install Hashicorp repo for Ubuntu/Debian
+  apt_repository: 
+    repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ lsb_release }} main
+    state: present
+    filename: hashicorp
+    update_cache: yes
+  when: ansible_distribution == 'Ubuntu'
+
+# If distros are CentOS/Fedora
+
+- name: installs yum utils if CentOS/Fedora
+  dnf:
+    name: dnf-plugins-core
+    state: latest
+    update_cache: True
+  when: ansible_distribution == 'Fedora' or ansible_distribution == 'CentOS'
+
+- name: Installs Hashicorp repo for RHEL distros
+  yum_repository:
+    name: Hashicorp repo
+    description: "HashiCorp repo"
+    baseurl: https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
+    enabled: 1
+    gpgcheck: 0
+  when: ansible_distribution == 'Fedora' or ansible_distribution == 'CentOS'
+
+
+

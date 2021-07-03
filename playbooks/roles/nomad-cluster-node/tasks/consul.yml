@@ -1,0 +1,14 @@
+
+- name: Install consul on Ubuntu
+  apt:
+    name: consul
+    state: present
+    update_cache: yes
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Install consul on CentOS/Fedora
+  dnf:
+    name: consul
+    state: latest
+    update_cache: True
+  when: ansible_distribution == 'Fedora' or ansible_distribution == 'CentOS'

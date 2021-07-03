@@ -1,0 +1,13 @@
+- name: Install nomad on Ubuntu
+  apt:
+    name: nomad
+    state: present
+    update_cache: yes
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Install nomad on CentOS/Fedora
+  dnf:
+    name: nomad
+    state: latest
+    update_cache: True
+  when: ansible_distribution == 'Fedora' or ansible_distribution == 'CentOS'
