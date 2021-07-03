@@ -29,4 +29,7 @@
     - { src: 'roles/cfssl-pki/templates/{{ cfssl_ca_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_ca_config_file }}' }
     - { src: 'roles/cfssl-pki/templates/{{ cfssl_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_config_file }}' }
   changed_when: true
+  notify:
+    - Generate CA
+    - Generate Intermediate CA
 
