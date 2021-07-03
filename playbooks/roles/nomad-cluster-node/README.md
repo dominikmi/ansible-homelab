@@ -1,7 +1,7 @@
-Role Name
-=========
+nomad-cluster-node
+==================
 
-`nomad-cluster-node` Nomad cluster role. Main goal is to automate Nomad cluster nodes deployment. 
+Main goal is to automate Hashicorp Nomad cluster deployment with consul as service mesh and intergration with vault. So virtually, the nomad role consists of three deployments - Nomad, Consul and Vault. 
 
 Requirements
 ------------
@@ -11,14 +11,14 @@ For now, it's written for Ubuntu 20.04 LTS.
 Role Variables
 --------------
 
-There are just a couple of variables for this role now.
+There are just a couple of variables for this role now. All of them are used to render proper config file on each node.
 
 - `nomad_server`: <IP_of_your_nomad_server>
 - `nomad_data_dir`: </path/to/your/nomad/data>
 - `consul_server`: <IP_of_your_consul_server>
 
 This variable was moved into `inventory` file where I control the cluster's setup (which lab hosts are control plane (servers/both) and which become just clients):
-- `nomad_node`: client|server|both 
+- `nomad_node`: client|server|both  
 
 Dependencies
 ------------
