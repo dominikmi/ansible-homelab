@@ -8,7 +8,7 @@
     update_cache: true
 
 - name: Downloading & installing cfssl binaries
-  ansible.builtin.shell: go get {{ cfssl_github_uri }}
+  ansible.builtin.command: go get {{ cfssl_github_uri }}
   changed_when: true
 
 - name: Create ssl/config folder in /opt
@@ -19,7 +19,7 @@
     group: root
     mode: 0755
     recurse: yes
-  changed_when: true
+    changed_when: true
 
 - name: Copy basic configs ca, intermediate and cfssl into /opt/ssl/config
   template:
@@ -34,4 +34,4 @@
   notify:
     - generate_ca
     - generate_intermediate_ca
-
+  
