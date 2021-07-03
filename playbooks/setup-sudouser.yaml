@@ -1,0 +1,13 @@
+# dla leniwych..
+---
+- hosts: all 
+  tasks:
+    - name: sudo without password for the defined ansible user
+      ansible.builtin.copy:
+        content: '{{ ansible_user }} ALL=(ALL:ALL) NOPASSWD:ALL'
+        dest: /etc/sudoers.d/{{ ansible_user }}_nopasswd
+        mode: 0440
+        owner: root
+        group: root
+        force: yes
+      become: yes
