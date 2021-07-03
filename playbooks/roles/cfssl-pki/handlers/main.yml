@@ -9,6 +9,8 @@
       - "/opt/ssl/ca.pem"
       - "/opt/ssl/ca-key.pem"
       - "/opt/ssl/ca.csr"
+  changed_when: true
+  
 - name: generate_intermediate_ca
   ansible.builtin.shell: cfssl gencert -initca {{ cfssl_config_dir }}/{{ cfssl_interm_config_file }} | cfssljson -bare intermediate_ca
   args: 
@@ -17,3 +19,4 @@
       - "/opt/ssl/intermediate_ca.pem"
       - "/opt/ssl/intermediate_ca-key.pem"
       - "/opt/ssl/intermediate_ca.csr"
+  changed_when: true

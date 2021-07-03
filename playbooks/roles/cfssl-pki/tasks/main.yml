@@ -18,6 +18,7 @@
     group: root
     mode: 0755
     recurse: yes
+  changed_when: true
 
 - name: Copy basic configs ca, intermediate and cfssl into /opt/ssl/config
   template:
