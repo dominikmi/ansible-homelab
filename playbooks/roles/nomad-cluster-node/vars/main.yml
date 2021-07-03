@@ -4,5 +4,4 @@
 
 nomad_server: 192.168.100.1
 nomad_data_dir: /var/devops/nomad
-nomad_node: client
 consul_server: 192.168.100.1
