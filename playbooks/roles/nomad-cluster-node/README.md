@@ -6,7 +6,7 @@ Main goal is to automate Hashicorp Nomad cluster deployment with consul as servi
 Requirements
 ------------
 
-For now, it's written for Ubuntu 20.04 LTS.
+For now, it's written distinguishably for either Ubuntu 20.04 LTS or CentOS/Fedora.
 
 Role Variables
 --------------
