@@ -6,16 +6,16 @@
   - name: Generate CA
     ansible.builtin.shell: cfssl gencert -initca {{ cfssl_config_dir }}/{{ cfssl_ca_config_file }} | cfssljson -bare ca
     args:
-      chdir: {{ cfssl_config_dir }}
+      chdir: "{{ cfssl_config_dir }}"
       creates:
-        - /opt/ssl/ca.pem
-        - /opt/ssl/ca-key.pem
-        - /opt/ssl/ca.csr
+        - "/opt/ssl/ca.pem"
+        - "/opt/ssl/ca-key.pem"
+        - "/opt/ssl/ca.csr"
   - name: Generate Intermediate CA
     ansible.builtin.shell: cfssl gencert -initca {{ cfssl_config_dir }}/{{ cfssl_interm_config_file }} | cfssljson -bare intermediate_ca
     args: 
-      chdir: {{ cfssl_config_dir }}
+      chdir: "{{ cfssl_config_dir }}"
       creates:
-        - /opt/ssl/intermediate_ca.pem
-        - /opt/ssl/intermediate_ca-key.pem
-        - /opt/ssl/intermediate_ca.csr
+        - "/opt/ssl/intermediate_ca.pem"
+        - "/opt/ssl/intermediate_ca-key.pem"
+        - "/opt/ssl/intermediate_ca.csr"
