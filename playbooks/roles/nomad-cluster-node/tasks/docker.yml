@@ -1,0 +1,6 @@
+- name: install docker
+  apt:
+    name: docker
+    state: present
+    update_cache: yes
+  when: ansible_distribution == 'Ubuntu'
