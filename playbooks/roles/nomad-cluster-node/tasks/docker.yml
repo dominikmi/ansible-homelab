@@ -4,3 +4,20 @@
     state: present
     update_cache: yes
   when: ansible_distribution == 'Ubuntu'
+  notify: restart_docker
+
+- name: install docker on Fedora
+  dnf:
+    name: docker-distribution
+    state: latest
+    update_cache: yes
+  when: ansible_distribution == 'Fedora'
+  notify: restart_docker
+
+- name: install docker on CentOS
+  yum:
+    name: docker-ce
+    state: latest
+    update_cache: yes
+  when: ansible_distribution == 'CentOS'
+  notify: restart_docker
