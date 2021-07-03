@@ -15,8 +15,10 @@ There are just a couple of variables for this role now.
 
 - `nomad_server`: <IP_of_your_nomad_server>
 - `nomad_data_dir`: </path/to/your/nomad/data>
-- `nomad_node`: client|server|both
 - `consul_server`: <IP_of_your_consul_server>
+
+This variable was moved into `inventory` file where I control the cluster's setup (which lab hosts are control plane (servers/both) and which become just clients):
+- `nomad_node`: client|server|both 
 
 Dependencies
 ------------
