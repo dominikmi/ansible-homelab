@@ -27,7 +27,7 @@
 
 - name: Installs Hashicorp repo for RHEL distros
   yum_repository:
-    name: Hashicorp repo
+    name: hashicorp
     description: "HashiCorp repo"
     baseurl: https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
     enabled: 1

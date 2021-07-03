@@ -1,6 +1,7 @@
 ---
 - name: use nomad-cluster-node role playbook
   hosts: all
+  become: true
 
   roles:
     - role: nomad-cluster-node
