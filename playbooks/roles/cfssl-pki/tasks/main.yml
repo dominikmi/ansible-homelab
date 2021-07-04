@@ -44,3 +44,11 @@
     - generate_host_cert
   when: ca_store == 'true'
   
+- name: Generate cert and key for each host other than ca store
+  delegate_to: '{{ ca_store_host }}'
+  template:
+    src: 'roles/cfssl-pki/templates/host_cert_conf.json.j2'
+    dest: '{{ cfssl_config_dir }}/{{ ansible_hostname }}.json'
+  notify:
+    - generate_host_cert
+  when: ca_store == 'false'
