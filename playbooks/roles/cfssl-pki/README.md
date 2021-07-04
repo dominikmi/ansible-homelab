@@ -7,7 +7,7 @@ Already accomplished steps this role performs:
 
 1. Installs cfssl & cfssljson
 2. Creates configs for ca & intermediate certs in `/opt/ssl/config`
-3. Creates profiles config for client, peer and server certs - (cfssl.json)
+3. Creates profiles config (defines certs properties and capabilities) for client, peer and server certs - (cfssl.json)
 4. Generates CA and Intermediate CA (signed by the CA cert)
 5. Generates server certificate for the given internal domain's FQDN (`ansible_fqdn`)
 
