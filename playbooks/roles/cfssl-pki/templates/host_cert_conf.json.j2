@@ -1,0 +1,24 @@
+{  
+  "CN": "{{ ansible_fqdn }}",
+  "key": {
+    "algo": "{{ cfssl_ca_key_algo }}",
+    "size": {{ cfssl_ca_key_size }}
+  },
+  "names": [
+  {
+    "C": "{{ cfssl_ca_names_c }}",
+    "L": "{{ cfssl_ca_names_l }}",
+    "O": "{{ cfssl_ca_names_o }}",
+    "OU": "{{ cfssl_ca_names_ou }}",
+    "ST": "{{ cfssl_ca_names_st }}"
+  }
+  ],
+  "hosts": [
+    "{{ ansible_fqdn }}",
+    "localhost",
+    "127.0.0.1", 
+    "{{ ansible_default_ipv4.address }}",
+    "{{ ansible_hostname }}.nukelab.nomad",
+    "{{ ansible_hostname }}.nukelab.consul"
+  ]
+}
