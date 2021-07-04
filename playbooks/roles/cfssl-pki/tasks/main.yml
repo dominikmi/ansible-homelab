@@ -6,6 +6,7 @@
     name: go
     state: latest
     update_cache: true
+  when: ansible_distribution == 'Fedora' or ansible_distribution == 'CentOS'
 
 - name: Downloading & installing cfssl binaries
   ansible.builtin.command: go get {{ cfssl_github_uri }}
@@ -34,8 +35,11 @@
     - { src: 'roles/cfssl-pki/templates/{{ cfssl_interm_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_interm_config_file }}' }
     - { src: 'roles/cfssl-pki/templates/{{ cfssl_ca_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_ca_config_file }}' }
     - { src: 'roles/cfssl-pki/templates/{{ cfssl_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_config_file }}' }
+    - { src: 'roles/cfssl-pki/templates/host_cert_conf.json.j2', dest: '{{ cfssl_config_dir }}/{{ ansible_hostname }}.json'}
   notify:
     - generate_ca
     - generate_intermediate_ca
     - sign_intermediate_with_ca
+    - generate_host_cert
+  when: ca_store == 'true'
   

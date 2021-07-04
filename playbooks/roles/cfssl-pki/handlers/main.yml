@@ -14,4 +14,9 @@
 - name: sign_intermediate_with_ca
   ansible.builtin.shell: cfssl sign -ca ca.pem -ca-key ca-key.pem -config {{ cfssl_config_dir }}/cfssl.json -profile intermediate_ca intermediate_ca.csr | cfssljson -bare intermediate_ca
   args:
-    chdir: /opt/ssl
+    chdir: "/opt/ssl"
+
+- name: generate_host_cert
+  ansible.builtin.shell: cfssl gencert -ca intermediate_ca.pem -ca-key intermediate_ca-key.pem -config {{ cfssl_config_dir }}/cfssl.json -profile={{ cert_role }} {{ cfssl_config_dir }}/{{ ansible_hostname }}.json | cfssljson -bare {{ ansible_hostname }}-{{ cert_role }}
+  args:
+    chdir: "/opt/ssl"
