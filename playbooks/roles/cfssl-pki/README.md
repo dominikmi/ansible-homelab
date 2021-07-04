@@ -9,8 +9,8 @@ Already accomplished steps this role performs:
 2. Creates configs for ca & intermediate certs in `/opt/ssl/config`
 3. Creates profiles config (defines certs properties and capabilities) for client, peer and server certs - (cfssl.json)
 4. Generates CA and Intermediate CA (signed by the CA cert)
-5. Generates server certificate for the given internal domain's FQDN (`ansible_fqdn`)
-6. Generating peer/server/client certificates for the defined pool of hosts
+5. Generates server certificate for the ca storing host with given internal domain's FQDN (`ansible_fqdn`)
+6. Generates peer/server/client certificates signed by the intermediate_ca, for the defined pool of hosts at `[all]` section in `inventory` file
 
 **[ This role is not ready yet ]**
 
