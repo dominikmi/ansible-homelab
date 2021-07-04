@@ -21,6 +21,11 @@ To Do
 3. Some tests,
 4. Additional playbooks to create client certificates (PFX bundled) for given workstations (browser level) for authentication/authorization to access secured services,
 
+Requirements
+------------
+
+For now, it's written distinguishably for either Ubuntu 20.04 LTS or CentOS/Fedora.
+
 Role Variables
 --------------
 
