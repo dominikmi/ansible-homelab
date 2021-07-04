@@ -7,8 +7,10 @@ cfssl_config_dir: "/opt/ssl/config"
 cfssl_config_file: "cfssl.json"
 cfssl_ca_config_file: "ca.json"
 cfssl_interm_config_file: "intermediate-ca.json"
+cfssl_ca_prefix: "ca"
+cfssl_intermediate_ca_prefix: "intermediate_ca"
 
-# cfssl config vars
+# cfssl config vars - pls customize to your purpose
 
 cfssl_default_expiry: "17532h"
 cfssl_intermediate_usage: 
