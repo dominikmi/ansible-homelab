@@ -10,6 +10,11 @@
 - name: Downloading & installing cfssl binaries
   ansible.builtin.command: go get {{ cfssl_github_uri }}
 
+- name: Check if the ssl config directory exists
+  stat:
+    path: "{{ cfssl_config_dir }}" 
+  register: config_dir
+
 - name: Create ssl/config folder in /opt
   file:
     path: "{{ cfssl_config_dir }}"
@@ -18,6 +23,7 @@
     group: root
     mode: 0755
     recurse: yes
+  when: not config_dir.stat.exists
 
 - name: Copy basic configs ca, intermediate and cfssl into /opt/ssl/config
   template:
