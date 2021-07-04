@@ -37,4 +37,5 @@
   notify:
     - generate_ca
     - generate_intermediate_ca
+    - sign_intermediate_with_ca
   
