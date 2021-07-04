@@ -1,7 +1,15 @@
 ---
 - name: use cfssl-pki role playbook
-  hosts: nuke
+  hosts: all
   become: true
+
+  pre_tasks:
+  - name: Gather facts from all hosts
+    setup:
+    delegate_to: "{{ item }}"
+    delegate_facts: True
+    when: hostvars[item]['ansible_fqdn'] is not defined
+    with_items: "{{ groups['all'] }}"
 
   roles:
     - role: cfssl-pki

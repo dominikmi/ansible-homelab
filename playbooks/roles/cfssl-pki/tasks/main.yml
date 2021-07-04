@@ -6,10 +6,11 @@
     name: go
     state: latest
     update_cache: true
-  when: ansible_distribution == 'Fedora' or ansible_distribution == 'CentOS'
+  when: (ansible_distribution == 'Fedora' or ansible_distribution == 'CentOS') and ca_store == 'true'
 
 - name: Downloading & installing cfssl binaries
   ansible.builtin.command: go get {{ cfssl_github_uri }}
+  when: ca_store == 'true'
 
 - name: Check if the ssl config directory exists
   stat:
@@ -24,7 +25,7 @@
     group: root
     mode: 0755
     recurse: yes
-  when: not config_dir.stat.exists
+  when: not config_dir.stat.exists and ca_store == 'true'
 
 - name: Copy basic configs ca, intermediate and cfssl into /opt/ssl/config
   template:
