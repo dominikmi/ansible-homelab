@@ -1,6 +1,12 @@
 ---
 # tasks file for cfssl-pki
 
+- name: Load a variable file based on the OS type
+  include_vars: "{{ item }}"
+  with_first_found:
+    - '{{ansible_distribution|lower}}-vars.yml'
+    - main.yml
+
 - name: Install go
   yum: 
     name: go
@@ -42,6 +48,8 @@
     - generate_intermediate_ca
     - sign_intermediate_with_ca
     - generate_host_cert
+    - copy_ca_to_store
+    - update_ca_registry
   when: ca_store == 'true'
   
 - name: Generate cert and key for each host other than ca store
@@ -51,4 +59,6 @@
     dest: '{{ cfssl_config_dir }}/{{ ansible_hostname }}.json'
   notify:
     - generate_host_cert
+    - copy_ca_to_store
+    - update_ca_registry
   when: ca_store == 'false'

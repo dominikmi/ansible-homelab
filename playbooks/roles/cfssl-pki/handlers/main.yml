@@ -4,20 +4,34 @@
 - name: generate_ca
   shell: cfssl gencert -initca {{ cfssl_config_dir }}/{{ cfssl_ca_config_file }} | cfssljson -bare {{ cfssl_ca_prefix }}
   args:
-    chdir: "/opt/ssl"
+    chdir: "{{cfssl_home}}"
   
 - name: generate_intermediate_ca
   shell: cfssl gencert -initca {{ cfssl_config_dir }}/{{ cfssl_interm_config_file }} | cfssljson -bare {{ cfssl_intermediate_ca_prefix }}
   args: 
-    chdir: "/opt/ssl"
+    chdir: "{{cfssl_home}}"
 
 - name: sign_intermediate_with_ca
   shell: cfssl sign -ca {{ cfssl_ca_prefix }}.pem -ca-key {{ cfssl_ca_prefix }}-key.pem -config {{ cfssl_config_dir }}/{{ cfssl_config_file }} -profile {{ cfssl_intermediate_ca_prefix }} {{ cfssl_intermediate_ca_prefix }}.csr | cfssljson -bare {{ cfssl_intermediate_ca_prefix }}
   args:
-    chdir: "/opt/ssl"
+    chdir: "{{cfssl_home}}"
 
 - name: generate_host_cert
   delegate_to: '{{ ca_store_host }}'
   shell: cfssl gencert -ca {{ cfssl_intermediate_ca_prefix }}.pem -ca-key {{ cfssl_intermediate_ca_prefix }}-key.pem -config {{ cfssl_config_dir }}/{{ cfssl_config_file }} -profile={{ cert_role }} {{ cfssl_config_dir }}/{{ ansible_hostname }}.json | cfssljson -bare {{ ansible_hostname }}-{{ cert_role }}
   args:
-    chdir: "/opt/ssl"
+    chdir: "{{cfssl_home}}"
+
+- name: copy_ca_to_store
+  copy:
+    src: '{{ item }}'
+    dest: '{{ ca_trust_store }}'
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - '{{cfssl_home}}/{{cfssl_ca_prefix}}.pem'
+    - '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.pem'
+  
+- name: update_ca_registry
+  shell: '{{update_ca_cmd}}'
