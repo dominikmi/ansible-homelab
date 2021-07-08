@@ -11,25 +11,26 @@ Already accomplished steps this role performs:
 4. Generates CA and Intermediate CA (signed by the CA cert)
 5. Generates server certificate for the ca storing host with given internal domain's FQDN (`ansible_fqdn`)
 6. Generates peer/server/client certificates signed by the intermediate_ca, for the defined pool of hosts at `[all]` section in `inventory` file
+7. Distributes the CA and Intermediate certs across all hosts.
 
 **[ This role is not ready yet ]**
 
 To Do
 -----
 
-7. Certs & keys distribution across the hosts,
+7. Host certs & keys distribution across the hosts,
 8. Some tests,
 9. Additional playbooks to create client certificates (PFX bundled) for given workstations (browser level) for authentication/authorization to access secured services,
 
 Requirements
 ------------
 
-For now, it's written distinguishably for either Ubuntu 20.04 LTS or CentOS/Fedora.
+For now, it's written distinguishably for either CentOS 8/Fedora 30+ or Ubuntu 20.04 LTS.
 
 Role Variables
 --------------
 
-Most vars used to fill in templates are defined in role's `defaults` directory. There are quite a bunch of them, yet they are pretty self explanatory. `vars/main.yml` contains only FQDN of the ca storing host. To properly run the tasks logic for `all` hosts the following hostvars are set in the `inventory` file: 
+Most vars used to fill in templates are defined in role's `vars` directory. There are also OS specific variables useful when it comes to distribute the certs by a single task/handler. The `ca_store_host` is defined at `[all:vars]` in the `inventory` file. Additionally, to properly run the tasks logic for `all` hosts the following hostvars are set in the `inventory` file as well: 
 * `ca_store` = false|true
 * `cert_role` = peer|server|client
 
