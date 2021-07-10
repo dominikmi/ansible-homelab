@@ -11,6 +11,9 @@ cfssl_interm_config_file: "intermediate-ca.json"
 cfssl_ca_prefix: "ca"
 cfssl_intermediate_ca_prefix: "intermediate_ca"
 
+# in process of copying generated certs a place where the files will be fetched from ca_store to controller to further push them over to the hosts
+cfssl_buffer: "~/.ansible/buffer/"
+
 # cfssl config vars - pls customize to your purpose
 
 cfssl_default_expiry: "17532h"
