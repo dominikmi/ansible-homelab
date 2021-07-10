@@ -8,7 +8,7 @@
     - main.yml
 
 - name: Install go for RHEL family
-  yum: 
+  dnf: 
     name: go
     state: latest
     update_cache: true
@@ -97,3 +97,10 @@
     - '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.crt'    
   when: ca_store == 'true'  
 
+- name: Distribute ca & intermediate across all
+  copy: 
+    src: '{{ item }}' 
+    dest: /tmp/
+  loop:
+    - '{{cfssl_buffer}}{{cfssl_ca_prefix}}.{{ca_cert_suffix}}'
+    - '{{cfssl_buffer}}{{cfssl_intermediate_ca_prefix}}.{{ca_cert_suffix}}'
