@@ -6,17 +6,3 @@
   shell: cfssl gencert -ca {{ cfssl_intermediate_ca_prefix }}.pem -ca-key {{ cfssl_intermediate_ca_prefix }}-key.pem -config {{ cfssl_config_dir }}/{{ cfssl_config_file }} -profile={{ cert_role }} {{ cfssl_config_dir }}/{{ ansible_hostname }}.json | cfssljson -bare {{ ansible_hostname }}-{{ cert_role }}
   args:
     chdir: "{{cfssl_home}}"
-
-- name: copy_ca_to_store
-  copy:
-    src: '{{ item }}'
-    dest: '{{ ca_trust_store }}'
-    owner: root
-    group: root
-    mode: 0644
-  loop:
-    - '{{cfssl_home}}/{{cfssl_ca_prefix}}.{{ca_cert_suffix}}'
-    - '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.{{ca_cert_suffix}}'
-  
-- name: update_ca_registry
-  shell: '{{update_ca_cmd}}'

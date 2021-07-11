@@ -100,7 +100,11 @@
 - name: Distribute ca & intermediate across all
   copy: 
     src: '{{ item }}' 
-    dest: /tmp/
+    dest: '{{ ca_trust_store }}'
   loop:
     - '{{cfssl_buffer}}{{cfssl_ca_prefix}}.{{ca_cert_suffix}}'
     - '{{cfssl_buffer}}{{cfssl_intermediate_ca_prefix}}.{{ca_cert_suffix}}'
+  
+- name: Update ca stores on hosts
+  command: '{{update_ca_cmd}}'
+  
