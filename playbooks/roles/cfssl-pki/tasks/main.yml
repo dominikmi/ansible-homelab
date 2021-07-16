@@ -33,6 +33,7 @@
   register: config_dir
 
 - name: Create ssl/config folder in /opt
+  delegate_to: '{{ ca_store_host }}'
   file:
     path: "{{ cfssl_config_dir }}"
     state: directory
@@ -41,6 +42,7 @@
     mode: 0755
     recurse: yes
   when: not config_dir.stat.exists and ca_store == 'true'
+  run_once: true
 
 - name: Generate configs for ca, intermediate and cfssl in /opt/ssl/config
   delegate_to: '{{ ca_store_host }}'
@@ -53,39 +55,74 @@
     - { src: 'roles/cfssl-pki/templates/{{ cfssl_ca_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_ca_config_file }}' }
     - { src: 'roles/cfssl-pki/templates/{{ cfssl_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_config_file }}' }
   when: ca_store == 'true'
+  run_once: true
 
-- name: Create CA & Intermediate CA, sign Intermediate CA with CA key
-  shell: '{{ item }}'
-  args:
-    chdir: "{{cfssl_home}}"
+- name: Check if CA and Intermediate already exist
+  delegate_to: '{{ ca_store_host }}'
+  stat:
+    path: '{{ item }}'
   loop:
-    - 'cfssl gencert -initca {{ cfssl_config_dir }}/{{ cfssl_ca_config_file }} | cfssljson -bare {{ cfssl_ca_prefix }}'
-    - 'cfssl gencert -initca {{ cfssl_config_dir }}/{{ cfssl_interm_config_file }} | cfssljson -bare {{ cfssl_intermediate_ca_prefix }}'
-    - 'cfssl sign -ca {{ cfssl_ca_prefix }}.pem -ca-key {{ cfssl_ca_prefix }}-key.pem -config {{ cfssl_config_dir }}/{{ cfssl_config_file }} -profile {{ cfssl_intermediate_ca_prefix }} {{ cfssl_intermediate_ca_prefix }}.csr | cfssljson -bare {{ cfssl_intermediate_ca_prefix }}'
-  when: ca_store == 'true'
+    - '{{cfssl_home}}/{{cfssl_ca_prefix}}.pem'
+    - '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.pem'
+  register: ca_status
+  run_once: true
+
+- name: Create CA
+  delegate_to: '{{ ca_store_host }}'
+  shell: 'cfssl gencert -initca {{ cfssl_config_dir }}/{{ cfssl_ca_config_file }} | cfssljson -bare {{ cfssl_ca_prefix }}'
+  args:
+    chdir: '{{cfssl_home}}'
+    creates: 
+      - '{{ cfssl_ca_prefix }}.pem'
+  when: ca_status.results.0.stat.exists == false
+  run_once: true
+
+- name: Create Intermediate CA
+  delegate_to: '{{ ca_store_host }}'
+  shell: 'cfssl gencert -initca {{ cfssl_config_dir }}/{{ cfssl_interm_config_file }} | cfssljson -bare {{ cfssl_intermediate_ca_prefix }}'
+  args: 
+    chdir: '{{cfssl_home}}'
+    creates: 
+      - '{{ cfssl_intermediate_ca_prefix }}.pem'
+  when: ca_status.results.1.stat.exists == false
+  run_once: true
+
+- name: Check if CA and Intermediate where created again
+  delegate_to: '{{ ca_store_host }}'
+  stat:
+    path: '{{ item }}'
+  loop:
+    - '{{cfssl_home}}/{{cfssl_ca_prefix}}.pem'
+    - '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.pem'
+  register: ca_status
+  run_once: true
+
+- name: sign Intermediate CA with CA key
+  delegate_to: '{{ ca_store_host }}'
+  shell: 'cfssl sign -ca {{ cfssl_ca_prefix }}.pem -ca-key {{ cfssl_ca_prefix }}-key.pem -config {{ cfssl_config_dir }}/{{ cfssl_config_file }} -profile {{ cfssl_intermediate_ca_prefix }} {{ cfssl_intermediate_ca_prefix }}.csr | cfssljson -bare {{ cfssl_intermediate_ca_prefix }}'
+  args:
+    chdir: '{{cfssl_home}}'
+  when: ca_status.results.0.stat.exists == true and ca_status.results.1.stat.exists == true
+  run_once: true
 
 - name: Create CA & Intermediate with .crt extension for Ubuntu
-  copy: 
-    src: '{{ item.src }}' 
-    dest: '{{ item.dest }}'
-    owner: root
-    group: root
-    mode: 0644
+  delegate_to: '{{ ca_store_host }}'
+  shell: cp '{{ item.src }}' '{{ item.dest }}'
   loop:
     - {src: '{{cfssl_home}}/{{cfssl_ca_prefix}}.pem', dest: '{{cfssl_home}}/{{cfssl_ca_prefix}}.crt'}
     - {src: '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.pem', dest: '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.crt'}
-  when: ca_store == 'true'
+  run_once: true
 
 - name: Create host cert configs & generate host certs
+  delegate_to: '{{ ca_store_host }}'
   template:
     src: 'roles/cfssl-pki/templates/host_cert_conf.json.j2'
     dest: '{{ cfssl_config_dir }}/{{ ansible_hostname }}.json'
-  delegate_to: '{{ ca_store_host }}'
   notify:
     - generate_host_cert
 
 - name: Copy CA & intermediate to controller
-  run_once: yes
+  delegate_to: '{{ ca_store_host }}'
   fetch: 
     src: '{{ item }}' 
     dest: '{{ cfssl_buffer }}' 
@@ -95,7 +132,7 @@
     - '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.pem'
     - '{{cfssl_home}}/{{cfssl_ca_prefix}}.crt'
     - '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.crt'    
-  when: ca_store == 'true'  
+  run_once: true  
 
 - name: Distribute ca & intermediate across all
   copy: 

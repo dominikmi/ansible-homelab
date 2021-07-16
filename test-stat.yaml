@@ -1,0 +1,15 @@
+---
+- hosts: dmlap
+  tasks:
+  - name: Check if two files already exist
+    stat:
+      path: '{{ item }}'
+    loop:
+      - '/opt/ssl/ca.pem'
+      - '/opt/ssl/intermediate_ca.pem'
+    register: ca_status
+
+  - name: Debug ca_status
+    debug:
+      var: ca_status.results.0.stat.exists
+
