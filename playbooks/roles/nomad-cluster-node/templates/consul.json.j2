@@ -1,0 +1,38 @@
+{
+    "bootstrap_expect": 1,
+    "client_addr": "0.0.0.0",
+    "datacenter": "nukelab",
+    "data_dir": "/var/devops/consul",
+    "domain": "consul",
+    "enable_script_checks": true,
+    "dns_config": {
+        "enable_truncate": true,
+        "only_passing": true
+    },
+    "ports": {
+        "http": 8500,
+        "https": 8501
+    },
+    "enable_syslog": true,
+    "encrypt": "uFO39ExWFLHFf/TwnOPdkhROaowqnfyKyaMht/BC/A8=",
+    "leave_on_terminate": true,
+    "log_level": "INFO",
+    "rejoin_after_leave": true,
+    "server": true,
+    "start_join": [
+        "192.168.100.1"
+    ],
+    "ui_config": {
+	    "enabled":true
+    },
+    "verify_incoming": true,
+    "verify_outgoing": true,
+    "verify_server_hostname": true,
+    "ca_file": "/etc/pki/ca-trust/source/anchors/intermediate_ca.pem",
+    "cert_file": "/etc/pki/tls/certs/powernuke-peer.pem",
+    "key_file": "/etc/pki/tls/private/powernuke-peer-key.pem",
+    "auto_encrypt": {
+            "allow_tls": true
+    }
+
+}

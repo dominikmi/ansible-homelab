@@ -2,12 +2,14 @@
 # vars file for nomad-cluster-node
 # nomad_server: client | server | both
 
+cluster_dc_name: 'nukelab'
 nomad_server: '192.168.100.1'
 nomad_data_dir: '/var/devops/nomad'
 nomad_cert_dir: '/etc/nomad.d/certs'
 consul_server: '192.168.100.1'
 consul_data_dir: '/var/devops/consul'
 consul_cert_dir: '/etc/consul.d/certs'
+consul_domain: 'nukelab.consul'
 vault_server: '192.168.100.1'
 vault_data_dir: '/var/devops/vault'
 vault_certs_dir: '/etc/vault.d/certs'
