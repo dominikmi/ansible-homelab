@@ -1,7 +1,7 @@
 cfssl-pki
 =========
 
-*cfssl-pki* - this role sets CloudFlare's cfssl binaries on a host, generates required configs for creating ca and intermediate-ca, and generates key & cert pem with a given (defined role [client|server|peer]). This role should be used for one host that is designated to store ca and intermediate. Other hosts to be supplied with newly generated certs are populated from there. Each host has its cert role defined as var in ansible inventory file. This role serves its purpose for setting up a home/lab environment based on self generated CA on internal-only defined domains.
+*cfssl-pki* - this role sets CloudFlare's cfssl binaries on a designated host which will store CA and the Intermediate. It generates required configs for creating ca and intermediate-ca, and generates key & cert pem with a given (defined role [client|server|peer]). This role can be used with all hosts in your inventory, with the one designated to store ca and intermediate (flag: `ca_store` in hostvars). Other hosts to be supplied with newly generated certs are populated from there. Each host has its cert role defined as var in ansible inventory file. This role serves its purpose for setting up a home/lab environment based on self generated CA on internal-only defined domains.
 
 Already accomplished steps this role performs:
 
@@ -12,14 +12,13 @@ Already accomplished steps this role performs:
 5. Generates server certificate for the ca storing host with given internal domain's FQDN (`ansible_fqdn`)
 6. Generates peer/server/client certificates signed by the intermediate_ca, for the defined pool of hosts at `[all]` section in `inventory` file
 7. Distributes the CA and Intermediate certs across all hosts.
+8. Host certs & keys distribution across the hosts,
 
 **[ This role is not ready yet ]**
 
 To Do
 -----
 
-7. Host certs & keys distribution across the hosts,
-8. Some tests,
 9. Additional playbooks to create client certificates (PFX bundled) for given workstations (browser level) for authentication/authorization to access secured services,
 
 Requirements

@@ -1,8 +1,2 @@
 ---
-# handlers file for cfssl-pki
-
-- name: generate_host_cert
-  delegate_to: '{{ ca_store_host }}'
-  shell: cfssl gencert -ca {{ cfssl_intermediate_ca_prefix }}.pem -ca-key {{ cfssl_intermediate_ca_prefix }}-key.pem -config {{ cfssl_config_dir }}/{{ cfssl_config_file }} -profile={{ cert_role }} {{ cfssl_config_dir }}/{{ ansible_hostname }}.json | cfssljson -bare {{ ansible_hostname }}-{{ cert_role }}
-  args:
-    chdir: "{{cfssl_home}}"
+# handlers for the cfssl-pki
