@@ -1,0 +1,7 @@
+# Directories and commands specific to Ubuntu
+
+ca_trust_store: '/usr/local/share/ca-certificates'
+update_ca_cmd: 'update-ca-certificates'
+host_tls_cert_store: '/etc/ssl/certs'
+host_tls_key_store: '/etc/ssl/private'
+ca_cert_suffix: 'crt'
