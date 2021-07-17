@@ -161,16 +161,21 @@
       - '{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}-key.pem'
   when: host_cert_status.changed == true
 
-- name: Copy host certs to the target host
-  delegate_to: '{{ca_store_host}}'
-  copy: 
-    src: "{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}.pem"
-    dest: "{{ host_tls_cert_store }}"
-    remote_src: true
+- name: Copy host certs & keys to the controller
+  delegate_to: '{{ ca_store_host }}'
+  fetch: 
+    src: '{{ item }}' 
+    dest: '{{ cfssl_buffer }}' 
+    flat: yes
+  loop: 
+    - "{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}.pem"
+    - "{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}-key.pem"
 
-- name: Copy host keys to the target host
-  delegate_to: '{{ca_store_host}}'
-  copy: 
-    src: "{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}-key.pem"
-    dest: "{{ host_tls_key_store }}"
-    remote_src: true
+- name: Copy host certs & keys to the target host
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  loop:
+    - {src: '{{cfssl_buffer}}{{ansible_hostname}}-{{cert_role}}.pem', dest: '{{ host_tls_cert_store }}'}
+    - {src: '{{cfssl_buffer}}{{ansible_hostname}}-{{cert_role}}-key.pem', dest: '{{ host_tls_key_store }}'}
+
