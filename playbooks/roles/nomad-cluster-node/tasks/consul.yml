@@ -4,11 +4,11 @@
     name: consul
     state: present
     update_cache: yes
-  when: ansible_distribution == 'Ubuntu'
+  when: ansible_distribution == 'Ubuntu' and consul_node
 
 - name: Install consul on CentOS/Fedora
   dnf:
     name: consul
     state: latest
     update_cache: True
-  when: ansible_distribution == 'Fedora' or ansible_distribution == 'CentOS'
+  when: (ansible_distribution == 'Fedora' or ansible_distribution == 'CentOS') and consul_node

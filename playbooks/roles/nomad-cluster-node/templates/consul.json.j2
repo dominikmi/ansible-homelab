@@ -14,13 +14,13 @@
         "https": 8501
     },
     "enable_syslog": true,
-    "encrypt": "uFO39ExWFLHFf/TwnOPdkhROaowqnfyKyaMht/BC/A8=",
+    "encrypt": "{{ consul_encrypt }}",
     "leave_on_terminate": true,
     "log_level": "INFO",
     "rejoin_after_leave": true,
     "server": true,
     "start_join": [
-        "192.168.100.1"
+        "{{ consul_server }}"
     ],
     "ui_config": {
 	    "enabled":true
@@ -29,8 +29,8 @@
     "verify_outgoing": true,
     "verify_server_hostname": true,
     "ca_file": "/etc/pki/ca-trust/source/anchors/intermediate_ca.pem",
-    "cert_file": "/etc/pki/tls/certs/powernuke-peer.pem",
-    "key_file": "/etc/pki/tls/private/powernuke-peer-key.pem",
+    "cert_file": "/etc/pki/tls/certs/{{ ansible_hostname }}-peer.pem",
+    "key_file": "/etc/pki/tls/private/{{ ansible_hostname }}-peer-key.pem",
     "auto_encrypt": {
             "allow_tls": true
     }
