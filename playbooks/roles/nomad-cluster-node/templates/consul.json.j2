@@ -35,12 +35,16 @@
     "verify_incoming": false,
     "verify_outgoing": false,
     "verify_server_hostname": false,
+    {% if consul_node == 'server' %}
     "ca_file": "{{ ca_trust_store }}/intermediate_ca.{{ ca_cert_suffix }}",
     "cert_file": "{{ host_tls_cert_store }}/{{ ansible_hostname }}-peer.pem",
     "key_file": "{{ host_tls_key_store }}/{{ ansible_hostname }}-peer-key.pem",
-    {% if consul_node == 'server' %}
     "auto_encrypt": {
-            "allow_tls": true
+        "allow_tls": true
     }
+    {% else %}
+    "ca_file": "{{ ca_trust_store }}/intermediate_ca.{{ ca_cert_suffix }}",
+    "cert_file": "{{ host_tls_cert_store }}/{{ ansible_hostname }}-peer.pem",
+    "key_file": "{{ host_tls_key_store }}/{{ ansible_hostname }}-peer-key.pem"
     {% endif %}
 }
