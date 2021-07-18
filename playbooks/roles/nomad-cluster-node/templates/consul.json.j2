@@ -1,9 +1,10 @@
+# This is consul configuration, last built: {{ ansible_date_time.date }} {{ ansible_date_time.time }} {{ ansible_date_time.tz }}
 {
     "bootstrap_expect": 1,
     "client_addr": "0.0.0.0",
-    "datacenter": "nukelab",
-    "data_dir": "/var/devops/consul",
-    "domain": "consul",
+    "datacenter": "{{ cluster_dc_name }}",
+    "data_dir": "{{ consul_data_dir }}",
+    "domain": "{{ consul_domain }}",
     "enable_script_checks": true,
     "dns_config": {
         "enable_truncate": true,
@@ -18,6 +19,9 @@
     "leave_on_terminate": true,
     "log_level": "INFO",
     "rejoin_after_leave": true,
+    {% if nomad_node == 'client' %}
+    "server": false,
+    {% else %}
     "server": true,
     "start_join": [
         "{{ consul_server }}"
@@ -28,11 +32,10 @@
     "verify_incoming": true,
     "verify_outgoing": true,
     "verify_server_hostname": true,
-    "ca_file": "/etc/pki/ca-trust/source/anchors/intermediate_ca.pem",
-    "cert_file": "/etc/pki/tls/certs/{{ ansible_hostname }}-peer.pem",
-    "key_file": "/etc/pki/tls/private/{{ ansible_hostname }}-peer-key.pem",
+    "ca_file": "{{ ca_trust_store }}/intermediate_ca.{{ ca_cert_suffix }}",
+    "cert_file": "{{ host_tls_cert_store }}/{{ ansible_hostname }}-peer.pem",
+    "key_file": "{{ host_tls_key_store }}/{{ ansible_hostname }}-peer-key.pem",
     "auto_encrypt": {
             "allow_tls": true
     }
-
 }

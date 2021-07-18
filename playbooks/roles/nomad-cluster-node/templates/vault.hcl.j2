@@ -1,0 +1,17 @@
+listener "tcp" {
+  address          = "0.0.0.0:8200"
+  cluster_address  = "{{ vault_server }}:8201"
+  tls_disable = "false"
+  tls_cert_file = "{{ host_tls_cert_store }}/{{ ansible_hostname }}-peer-fullchain.pem"
+  tls_key_file  = "{{ host_tls_cert_store }}/{{ ansible_hostname }}-peer-key.pem"
+}
+
+storage "consul" {
+  address = "{{ consul_server }}:8500"
+  path = "vault/"
+  token = "{{ consul_vault_token }}"
+}
+
+api_addr         = "http://{{ vault_server }}:8200"
+cluster_addr     = "http://{{ vault_server }}:8201"
+ui               = true

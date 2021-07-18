@@ -48,9 +48,9 @@ tls {
   http = true
   rpc  = true
 
-  ca_file   = "/usr/local/share/ca-certificates/intermediate_ca.crt"
-  cert_file = "/etc/ssl/certs/{{ ansible_fqdn }}-peer.pem"
-  key_file  = "/etc/ssl/private/{{ ansible_fqdn }}-peer-key.pem"
+  ca_file   = "{{ ca_trust_store }}/intermediate_ca.{{ ca_cert_suffix }}"
+  cert_file = "{{ host_tls_cert_store }}/{{ ansible_hostname }}-peer.pem"
+  key_file  = "{{ host_tls_key_store }}/{{ ansible_hostname }}-peer-key.pem"
 
   verify_server_hostname = false
   verify_https_client    = false
