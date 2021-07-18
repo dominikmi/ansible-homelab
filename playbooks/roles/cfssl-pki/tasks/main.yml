@@ -183,4 +183,7 @@
 
 - name: Create fullchain cert file
   shell: cat {{ansible_hostname}}-{{cert_role}}.pem {{ ca_trust_store }}/{{cfssl_intermediate_ca_prefix}}.{{ca_cert_suffix}} {{ ca_trust_store }}/{{cfssl_ca_prefix}}.{{ca_cert_suffix}} > {{ansible_hostname}}-{{cert_role}}-fullchain.pem
+  args:
     chdir: '{{ host_tls_cert_store }}'
+    creates:
+      - '{{ host_tls_cert_store }}'/{{ansible_hostname}}-{{cert_role}}-fullchain.pem'
