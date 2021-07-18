@@ -14,11 +14,12 @@
   }
   ],
   "hosts": [
-    "{{ ansible_fqdn }}",
+    "{{ ansible_hostname }}.{{ domain_name }}",
+    "{{ ansible_hostname }}",
     "localhost",
     "127.0.0.1", 
     "{{ ansible_default_ipv4.address }}",
     "{{ ansible_hostname }}.nukelab.nomad",
-    "{{ ansible_hostname }}.nukelab.consul"
+    "{{ ansible_hostname }}.nukelab.consul",
   ]
 }

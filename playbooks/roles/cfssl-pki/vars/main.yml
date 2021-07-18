@@ -2,6 +2,8 @@
 # vars file for cfssl-pki
 # Basic config
 
+domain_name: "nukelab.home"
+
 cfssl_github_uri: "github.com/cloudflare/cfssl/cmd/..."
 cfssl_home: "/opt/ssl"
 cfssl_config_dir: "/opt/ssl/config"
