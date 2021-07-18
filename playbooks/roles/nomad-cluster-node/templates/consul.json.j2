@@ -1,6 +1,8 @@
 {
     "node_name": "{{ ansible_hostname }}",
+    {% if consul_node == 'server' %}
     "bootstrap_expect": 1,
+    {% endif %}
     "client_addr": "0.0.0.0",
     "datacenter": "{{ cluster_dc_name }}",
     "data_dir": "{{ consul_data_dir }}",
@@ -30,9 +32,9 @@
     "ui_config": {
 	    "enabled":true
     },
-    "verify_incoming": true,
-    "verify_outgoing": true,
-    "verify_server_hostname": true,
+    "verify_incoming": false,
+    "verify_outgoing": false,
+    "verify_server_hostname": false,
     "ca_file": "{{ ca_trust_store }}/intermediate_ca.{{ ca_cert_suffix }}",
     "cert_file": "{{ host_tls_cert_store }}/{{ ansible_hostname }}-peer.pem",
     "key_file": "{{ host_tls_key_store }}/{{ ansible_hostname }}-peer-key.pem",
