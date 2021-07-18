@@ -1,189 +1,20 @@
 ---
 # tasks file for cfssl-pki
 
-# Get all prerequisites loaded and installed
+- name: Load variables based on OS type 
+  include_tasks: osvars.yml
 
-- name: Load a variable file based on the OS type
-  include_vars: "{{ item }}"
-  with_first_found:
-    - '{{ansible_distribution|lower}}-vars.yml'
-    - main.yml
-
-- name: Install go for RHEL family
-  dnf: 
-    name: go
-    state: latest
-    update_cache: true
-  when: (ansible_distribution == 'Fedora' or ansible_distribution == 'CentOS') and ca_store == 'true'
-  run_once: true
-
-- name: Install go for Ubuntu
-  apt:
-    name: go
-    state: latest
-    update_cache: true
-  when: (ansible_distribution == 'Ubuntu') and ca_store == 'true'
-  run_once: true
-
-- name: Downloading & installing cfssl binaries
-  ansible.builtin.command: go get {{ cfssl_github_uri }}
+- name: Install go on ca host
+  include_tasks: go.yml
   when: ca_store == 'true'
 
-# Prepare cfssl configs
-
-- name: Check if the ssl config directory exists
-  stat:
-    path: "{{ cfssl_config_dir }}" 
-  register: config_dir
-
-- name: Create ssl/config folder in /opt
-  delegate_to: '{{ ca_store_host }}'
-  file:
-    path: "{{ cfssl_config_dir }}"
-    state: directory
-    owner: root
-    group: root
-    mode: 0755
-    recurse: yes
-  when: not config_dir.stat.exists and ca_store == 'true'
-  run_once: true
-
-- name: Generate configs for ca, intermediate and cfssl in /opt/ssl/config
-  delegate_to: '{{ ca_store_host }}'
-  template:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
-    mode: '0644'
-  loop:
-    - { src: 'roles/cfssl-pki/templates/{{ cfssl_interm_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_interm_config_file }}' }
-    - { src: 'roles/cfssl-pki/templates/{{ cfssl_ca_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_ca_config_file }}' }
-    - { src: 'roles/cfssl-pki/templates/{{ cfssl_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_config_file }}' }
+- name: Install cfssl & prepare cfssl configs 
+  include_tasks: cfssl.yml
   when: ca_store == 'true'
-  run_once: true
 
-# Handle CA and Intermediate CA
+- name: Create install and distribute CA & Intermediate
+  include_tasks: ca.yml
 
-- name: Check if CA and Intermediate already exist
-  delegate_to: '{{ ca_store_host }}'
-  stat:
-    path: '{{ item }}'
-  loop:
-    - '{{cfssl_home}}/{{cfssl_ca_prefix}}.pem'
-    - '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.pem'
-  register: ca_status
-  run_once: true
-
-- name: Create CA
-  delegate_to: '{{ ca_store_host }}'
-  shell: 'cfssl gencert -initca {{ cfssl_config_dir }}/{{ cfssl_ca_config_file }} | cfssljson -bare {{ cfssl_ca_prefix }}'
-  args:
-    chdir: '{{cfssl_home}}'
-    creates: 
-      - '{{ cfssl_ca_prefix }}.pem'
-  when: ca_status.results.0.stat.exists == false
-  run_once: true
-
-- name: Create Intermediate CA & sign it
-  delegate_to: '{{ ca_store_host }}'
-  shell: 'cfssl gencert -initca {{ cfssl_config_dir }}/{{ cfssl_interm_config_file }} | cfssljson -bare {{ cfssl_intermediate_ca_prefix }} && cfssl sign -ca {{ cfssl_ca_prefix }}.pem -ca-key {{ cfssl_ca_prefix }}-key.pem -config {{ cfssl_config_dir }}/{{ cfssl_config_file }} -profile {{ cfssl_intermediate_ca_prefix }} {{ cfssl_intermediate_ca_prefix }}.csr | cfssljson -bare {{ cfssl_intermediate_ca_prefix }}'
-  args: 
-    chdir: '{{cfssl_home}}'
-    creates: 
-      - '{{ cfssl_intermediate_ca_prefix }}.pem'
-  when: ca_status.results.1.stat.exists == false
-  run_once: true
-
-- name: Check if CA and Intermediate crt already exist
-  delegate_to: '{{ ca_store_host }}'
-  stat:
-    path: '{{ item }}'
-  loop:
-    - '{{cfssl_home}}/{{cfssl_ca_prefix}}.crt'
-    - '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.crt'
-  register: ca_status
-  run_once: true
-
-- name: Create CA & Intermediate with .crt extension for Ubuntu
-  delegate_to: '{{ ca_store_host }}'
-  shell: cp '{{ item.src }}' '{{ item.dest }}'
-  loop:
-    - {src: '{{cfssl_home}}/{{cfssl_ca_prefix}}.pem', dest: '{{cfssl_home}}/{{cfssl_ca_prefix}}.crt'}
-    - {src: '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.pem', dest: '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.crt'}
-  when: ca_status.results.0.stat.exists == false and ca_status.results.1.stat.exists == false
-  run_once: true
-
-- name: Copy CA & intermediate to the controller
-  delegate_to: '{{ ca_store_host }}'
-  fetch: 
-    src: '{{ item }}' 
-    dest: '{{ cfssl_buffer }}' 
-    flat: yes
-  loop: 
-    - '{{cfssl_home}}/{{cfssl_ca_prefix}}.pem'
-    - '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.pem'
-    - '{{cfssl_home}}/{{cfssl_ca_prefix}}.crt'
-    - '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.crt'    
-  run_once: true  
-
-- name: Distribute ca & intermediate across all
-  copy: 
-    src: '{{ item }}' 
-    dest: '{{ ca_trust_store }}'
-  loop:
-    - '{{cfssl_buffer}}{{cfssl_ca_prefix}}.{{ca_cert_suffix}}'
-    - '{{cfssl_buffer}}{{cfssl_intermediate_ca_prefix}}.{{ca_cert_suffix}}'
+- name: Create & distribute host certs
+  include_tasks: hostcerts.yml
   
-- name: Update ca stores on hosts
-  command: '{{update_ca_cmd}}'
-
-# Handle host certs & keys
-
-- name: Create host cert configs
-  delegate_to: '{{ ca_store_host }}'
-  template:
-    src: 'roles/cfssl-pki/templates/host_cert_conf.json.j2'
-    dest: '{{ cfssl_config_dir }}/{{ ansible_hostname }}.json'
-
-- name: Check if host certs already exist
-  delegate_to: '{{ ca_store_host }}'
-  stat:
-    path: '{{ item }}'
-  loop:
-    - '{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}.pem'
-    - '{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}-key.pem'
-  register: host_cert_status
-
-- name: Generate host certs
-  delegate_to: '{{ ca_store_host }}'
-  shell: cfssl gencert -ca {{ cfssl_intermediate_ca_prefix }}.pem -ca-key {{ cfssl_intermediate_ca_prefix }}-key.pem -config {{ cfssl_config_dir }}/{{ cfssl_config_file }} -profile={{ cert_role }} {{ cfssl_config_dir }}/{{ ansible_hostname }}.json | cfssljson -bare {{ ansible_hostname }}-{{ cert_role }}
-  args:
-    chdir: '{{cfssl_home}}'
-    creates:
-      - '{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}.pem'
-      - '{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}-key.pem'
-  when: host_cert_status.changed == true
-
-- name: Copy host certs & keys to the controller
-  delegate_to: '{{ ca_store_host }}'
-  fetch: 
-    src: '{{ item }}' 
-    dest: '{{ cfssl_buffer }}' 
-    flat: yes
-  loop: 
-    - "{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}.pem"
-    - "{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}-key.pem"
-
-- name: Copy host certs & keys to the target host
-  copy:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
-  loop:
-    - {src: '{{cfssl_buffer}}{{ansible_hostname}}-{{cert_role}}.pem', dest: '{{ host_tls_cert_store }}'}
-    - {src: '{{cfssl_buffer}}{{ansible_hostname}}-{{cert_role}}-key.pem', dest: '{{ host_tls_key_store }}'}
-
-- name: Create fullchain cert file
-  shell: cat {{ansible_hostname}}-{{cert_role}}.pem {{ ca_trust_store }}/{{cfssl_intermediate_ca_prefix}}.{{ca_cert_suffix}} {{ ca_trust_store }}/{{cfssl_ca_prefix}}.{{ca_cert_suffix}} > {{ansible_hostname}}-{{cert_role}}-fullchain.pem
-  args:
-    chdir: '{{ host_tls_cert_store }}'
-    creates:
-      - '{{ host_tls_cert_store }}/{{ansible_hostname}}-{{cert_role}}-fullchain.pem'

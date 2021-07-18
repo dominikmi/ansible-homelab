@@ -1,0 +1,14 @@
+- name: Install go for RHEL family
+  dnf: 
+    name: go
+    state: latest
+    update_cache: true
+  when: ansible_distribution == 'Fedora' or ansible_distribution == 'CentOS'
+  run_once: true
+
+- name: Install go for Ubuntu
+  apt:
+    name: go
+    state: latest
+    update_cache: true
+  when: ansible_distribution == 'Ubuntu'

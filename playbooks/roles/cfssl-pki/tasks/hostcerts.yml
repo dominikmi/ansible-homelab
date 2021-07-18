@@ -1,0 +1,51 @@
+# Handle host certs & keys
+
+- name: Create host cert configs
+  delegate_to: '{{ ca_store_host }}'
+  template:
+    src: 'roles/cfssl-pki/templates/host_cert_conf.json.j2'
+    dest: '{{ cfssl_config_dir }}/{{ ansible_hostname }}.json'
+
+- name: Check if host certs already exist
+  delegate_to: '{{ ca_store_host }}'
+  stat:
+    path: '{{ item }}'
+  loop:
+    - '{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}.pem'
+    - '{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}-key.pem'
+  register: host_cert_status
+
+- name: Generate host certs
+  delegate_to: '{{ ca_store_host }}'
+  shell: cfssl gencert -ca {{ cfssl_intermediate_ca_prefix }}.pem -ca-key {{ cfssl_intermediate_ca_prefix }}-key.pem -config {{ cfssl_config_dir }}/{{ cfssl_config_file }} -profile={{ cert_role }} {{ cfssl_config_dir }}/{{ ansible_hostname }}.json | cfssljson -bare {{ ansible_hostname }}-{{ cert_role }}
+  args:
+    chdir: '{{cfssl_home}}'
+    creates:
+      - '{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}.pem'
+      - '{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}-key.pem'
+  when: host_cert_status.changed == true
+
+- name: Copy host certs & keys to the controller
+  delegate_to: '{{ ca_store_host }}'
+  fetch: 
+    src: '{{ item }}' 
+    dest: '{{ cfssl_buffer }}' 
+    flat: yes
+  loop: 
+    - "{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}.pem"
+    - "{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}-key.pem"
+
+- name: Copy host certs & keys to the target host
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  loop:
+    - {src: '{{cfssl_buffer}}{{ansible_hostname}}-{{cert_role}}.pem', dest: '{{ host_tls_cert_store }}'}
+    - {src: '{{cfssl_buffer}}{{ansible_hostname}}-{{cert_role}}-key.pem', dest: '{{ host_tls_key_store }}'}
+
+- name: Create fullchain cert file
+  shell: cat {{ansible_hostname}}-{{cert_role}}.pem {{ ca_trust_store }}/{{cfssl_intermediate_ca_prefix}}.{{ca_cert_suffix}} {{ ca_trust_store }}/{{cfssl_ca_prefix}}.{{ca_cert_suffix}} > {{ansible_hostname}}-{{cert_role}}-fullchain.pem
+  args:
+    chdir: '{{ host_tls_cert_store }}'
+    creates:
+      - '{{ host_tls_cert_store }}/{{ansible_hostname}}-{{cert_role}}-fullchain.pem'

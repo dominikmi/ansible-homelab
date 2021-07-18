@@ -1,0 +1,36 @@
+
+# Set up whole cfssl environment on the ca_store
+
+- name: Downloading & installing cfssl binaries
+  ansible.builtin.command: go get {{ cfssl_github_uri }}
+
+# Prepare cfssl configs
+
+- name: Check if the ssl config directory exists
+  stat:
+    path: "{{ cfssl_config_dir }}" 
+  register: config_dir
+
+- name: Create ssl/config folder in /opt
+  delegate_to: '{{ ca_store_host }}'
+  file:
+    path: "{{ cfssl_config_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+    recurse: yes
+  when: not config_dir.stat.exists and ca_store == 'true'
+  run_once: true
+
+- name: Generate configs for ca, intermediate and cfssl in /opt/ssl/config
+  delegate_to: '{{ ca_store_host }}'
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: '0644'
+  loop:
+    - { src: 'roles/cfssl-pki/templates/{{ cfssl_interm_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_interm_config_file }}' }
+    - { src: 'roles/cfssl-pki/templates/{{ cfssl_ca_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_ca_config_file }}' }
+    - { src: 'roles/cfssl-pki/templates/{{ cfssl_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_config_file }}' }
+  run_once: true
