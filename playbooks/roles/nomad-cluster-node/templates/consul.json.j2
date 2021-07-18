@@ -23,6 +23,7 @@
     "server": false,
     {% else %}
     "server": true,
+    {% endif %}
     "start_join": [
         "{{ consul_server }}"
     ],
