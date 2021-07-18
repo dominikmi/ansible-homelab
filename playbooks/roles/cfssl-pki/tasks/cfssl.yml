@@ -29,6 +29,7 @@
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
     mode: '0644'
+  changed_when: true
   loop:
     - { src: 'roles/cfssl-pki/templates/{{ cfssl_interm_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_interm_config_file }}' }
     - { src: 'roles/cfssl-pki/templates/{{ cfssl_ca_config_file }}.j2', dest: '{{ cfssl_config_dir }}/{{ cfssl_ca_config_file }}' }
