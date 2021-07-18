@@ -39,7 +39,7 @@ galaxy_info:
        - 7
        - 8
     - name: Ubuntu
-     versions:
+      versions:
        - 20.04
 
   galaxy_tags:

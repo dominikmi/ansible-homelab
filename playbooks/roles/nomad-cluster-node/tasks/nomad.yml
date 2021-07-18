@@ -3,11 +3,11 @@
     name: nomad
     state: present
     update_cache: yes
-  when: ansible_distribution == 'Ubuntu' and nomad_node
+  when: ansible_distribution == 'Ubuntu' and nomad_node is defined
 
 - name: Install nomad on CentOS/Fedora
   dnf:
     name: nomad
     state: latest
     update_cache: True
-  when: (ansible_distribution == 'Fedora' or ansible_distribution == 'CentOS') and nomad_node
+  when: (ansible_distribution == 'Fedora' or ansible_distribution == 'CentOS') and (nomad_node is defined)
