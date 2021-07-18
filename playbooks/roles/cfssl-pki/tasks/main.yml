@@ -186,4 +186,4 @@
   args:
     chdir: '{{ host_tls_cert_store }}'
     creates:
-      - '{{ host_tls_cert_store }}'/{{ansible_hostname}}-{{cert_role}}-fullchain.pem'
+      - '{{ host_tls_cert_store }}/{{ansible_hostname}}-{{cert_role}}-fullchain.pem'
