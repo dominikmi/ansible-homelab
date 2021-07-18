@@ -181,3 +181,6 @@
     - {src: '{{cfssl_buffer}}{{ansible_hostname}}-{{cert_role}}.pem', dest: '{{ host_tls_cert_store }}'}
     - {src: '{{cfssl_buffer}}{{ansible_hostname}}-{{cert_role}}-key.pem', dest: '{{ host_tls_key_store }}'}
 
+- name: Create fullchain cert file
+  shell: cat {{ansible_hostname}}-{{cert_role}}.pem {{ ca_trust_store }}/{{cfssl_intermediate_ca_prefix}}.{{ca_cert_suffix}} {{ ca_trust_store }}/{{cfssl_ca_prefix}}.{{ca_cert_suffix}} > {{ansible_hostname}}-{{cert_role}}-fullchain.pem
+    chdir: '{{ host_tls_cert_store }}'

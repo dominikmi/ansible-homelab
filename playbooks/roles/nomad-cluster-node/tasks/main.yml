@@ -2,8 +2,10 @@
 # tasks file for nomad-cluster-node
 - name: Install openjdk 11 runtime 
   include_tasks: openjdk-11.yml
+  when: nomad_node == 'client'
 - name: Install docker runtime
   include_tasks: docker.yml
+  when: nomad_node == 'client' or nomad_node == 'both'
 - name: Install HashiCorp repository
   include_tasks: hashirepo.yml
 - name: Install Nomad
