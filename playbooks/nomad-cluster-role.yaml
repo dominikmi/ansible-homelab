@@ -5,11 +5,3 @@
 
   roles:
     - role: nomad-cluster-node
-
-  post_tasks:
-    - name: install nomad config        
-      template:
-        src: roles/nomad-cluster-node/templates/nomad.hcl.j2
-        dest: "/etc/nomad.d/nomad.hcl"
-      changed_when: true
-      notify: restart_nomad

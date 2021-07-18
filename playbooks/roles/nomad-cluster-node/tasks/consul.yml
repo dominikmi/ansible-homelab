@@ -12,3 +12,11 @@
     state: latest
     update_cache: True
   when: (ansible_distribution == 'Fedora' or ansible_distribution == 'CentOS') and (consul_node is defined)
+
+- name: install consul config        
+  template:
+    src: roles/nomad-cluster-node/templates/consul.json.j2
+    dest: "{{ consul_home }}/consul.json"
+  changed_when: true
+  notify: restart_consul
+  when: consul_node is defined

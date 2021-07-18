@@ -11,3 +11,11 @@
     state: latest
     update_cache: True
   when: (ansible_distribution == 'Fedora' or ansible_distribution == 'CentOS') and (nomad_node is defined)
+
+- name: install nomad config        
+  template:
+    src: roles/nomad-cluster-node/templates/nomad.hcl.j2
+    dest: "{{ nomad_home }}/nomad.hcl"
+  changed_when: true
+  notify: restart_nomad
+  when: nomad_node is defined
