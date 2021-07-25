@@ -26,14 +26,14 @@
     {% elif nomad_node == 'both' %}
     "server.{{ domain_name }}.nomad",
     "client.{{ domain_name }}.nomad"
-    {% else %}
+    {% elif nomad_node is not defined %}
     {% endif %}
     {% if consul_node == 'client' or consul_node == 'server' %}
     "{{ consul_node }}.{{ domain_name }}.nomad"
     {% elif consul_node == 'both' %}
     "server.{{ domain_name }}.nomad",
     "client.{{ domain_name }}.nomad"
-    {% else %}
+    {% elif consul_node is not defined %}
     {% endif %}
   ]
 }
