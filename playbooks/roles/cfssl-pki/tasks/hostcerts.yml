@@ -9,10 +9,10 @@
 - name: Check if host certs already exist
   delegate_to: '{{ ca_store_host }}'
   stat:
-    path: '{{ item }}'
+    path: '{{cfssl_home}}/{{ item }}'
   loop:
-    - '{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}.pem'
-    - '{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}-key.pem'
+    - '{{ansible_hostname}}-{{cert_role}}.pem'
+    - '{{ansible_hostname}}-{{cert_role}}-key.pem'
   register: host_cert_status
 
 - name: Generate host certs
@@ -23,7 +23,7 @@
     creates:
       - '{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}.pem'
       - '{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}-key.pem'
-  when: host_cert_status.changed == true or host_cert_status.stat.exists == false
+  when: host_cert_status.changed == 'false'
 
 - name: Copy host certs & keys to the controller
   delegate_to: '{{ ca_store_host }}'

@@ -22,10 +22,10 @@
     "{{ ansible_hostname }}.{{ domain_name }}.nomad",
     "{{ ansible_hostname }}.{{ domain_name }}.consul",
     {% if nomad_node == 'client' or nomad_node == 'server' %}
-    "{{ nomad_node }}.{{ domain_name }}.nomad"
+    "{{ nomad_node }}.{{ domain_name }}.nomad",
     {% elif nomad_node == 'both' %}
     "server.{{ domain_name }}.nomad",
-    "client.{{ domain_name }}.nomad"
+    "client.{{ domain_name }}.nomad",
     {% elif not nomad_node %}
     {% endif %}
     {% if consul_node == 'client' or consul_node == 'server' %}
