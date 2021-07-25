@@ -19,7 +19,21 @@
     "localhost",
     "127.0.0.1", 
     "{{ ansible_default_ipv4.address }}",
-    "{{ ansible_hostname }}.nukelab.nomad",
-    "{{ ansible_hostname }}.nukelab.consul",
+    "{{ ansible_hostname }}.{{ domain_name }}.nomad",
+    "{{ ansible_hostname }}.{{ domain_name }}.consul",
+    {% if nomad_node == 'client' or nomad_node == 'server' %}
+    "{{ nomad_node }}.{{ domain_name }}.nomad"
+    {% elif nomad_node == 'both' %}
+    "server.{{ domain_name }}.nomad",
+    "client.{{ domain_name }}.nomad"
+    {% else %}
+    {% endif %}
+    {% if consul_node == 'client' or consul_node == 'server' %}
+    "{{ consul_node }}.{{ domain_name }}.nomad"
+    {% elif consul_node == 'both' %}
+    "server.{{ domain_name }}.nomad",
+    "client.{{ domain_name }}.nomad"
+    {% else %}
+    {% endif %}
   ]
 }
