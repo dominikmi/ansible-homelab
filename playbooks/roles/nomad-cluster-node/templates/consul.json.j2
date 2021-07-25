@@ -45,6 +45,6 @@
     {% else %}
     "ca_file": "{{ ca_trust_store }}/intermediate_ca.{{ ca_cert_suffix }}",
     "cert_file": "{{ host_tls_cert_store }}/{{ ansible_hostname }}-peer.pem",
-    "key_file": "{{ host_tls_key_store }}/{{ ansible_hostname }}-peer-key.pem"
+    "key_file": "{{ host_tls_key_store }}/{{ ansible_hostname }}-peer-key.pem",
     {% endif %}
 }
