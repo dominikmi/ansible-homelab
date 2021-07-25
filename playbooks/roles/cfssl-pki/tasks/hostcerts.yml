@@ -23,7 +23,7 @@
     creates:
       - '{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}.pem'
       - '{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}-key.pem'
-  when: host_cert_status.changed == true
+  when: host_cert_status.changed == true or host_cert_status.stat.exists == false
 
 - name: Copy host certs & keys to the controller
   delegate_to: '{{ ca_store_host }}'
