@@ -1,10 +1,10 @@
 ---
-- hosts: nuke
+- hosts: powernuke
   tasks:
     - name: Add nextdns repo
       yum_repository:
         name: nextdns
-        description: "Repo for NextDNS on CentOS8"
+        description: "Repo for NextDNS on Fedora server"
         baseurl: https://repo.nextdns.io/rpm
         enabled: 1
         gpgcheck: 0
