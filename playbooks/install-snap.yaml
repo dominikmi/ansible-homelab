@@ -6,11 +6,11 @@
         name: snapd
         state: latest
         update_cache: True
-      become: yes
+      become: true
 
     - name: Start snapd service
       ansible.builtin.systemd:
         name: snapd
         state: started
-        enabled: yes
-      become: yes
+        enabled: true
+      become: true
