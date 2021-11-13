@@ -2,7 +2,7 @@
 # vars file for nomad-cluster-node
 # nomad_server: client | server | both
 
-cluster_dc_name: '{{ domain_name }}'
+cluster_dc_name: '{{ lab_domain_name }}'
 nomad_server: '192.168.100.1'
 nomad_data_dir: '/var/devops/nomad'
 nomad_home: '/etc/nomad.d'

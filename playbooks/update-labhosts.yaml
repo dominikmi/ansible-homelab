@@ -8,4 +8,6 @@
       apt: 
         name: "*"
         state: latest
+    - name: Reboot
+      reboot:
   become: yes

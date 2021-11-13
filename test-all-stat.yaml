@@ -2,7 +2,7 @@
 - hosts: all
   tasks:
   - name: Check if cert files already exist
-    delegate_to: nuke
+    delegate_to: powernuke
     stat:
       path: '{{ item }}'
     loop:
