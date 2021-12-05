@@ -2,7 +2,7 @@ gitlab-vm-lab
 =============
 
 This role is intended to automate setting up quickly a Gitlab-CE instance on a Fedora Cloud 34 VM. 
-[Work in progress]
+Originally, GitLab does not support setting up the gitlab-ce package on Fedora 34 (the initial repo install script fails). However, we may still use the package for RHEL 8.
 
 Requirements
 ------------
