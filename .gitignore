@@ -6,6 +6,7 @@ hosts
 *.vscode
 vault.yml
 passwd.yml
+*.swp
 
 # Logs
 logs

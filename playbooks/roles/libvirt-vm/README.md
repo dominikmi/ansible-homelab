@@ -1,5 +1,5 @@
-Role Name
-=========
+libvirt-vm
+==========
 
 This role is intended to quickly bring up a local libvirt VM with assigned static IP within the pre-defined "default" network on the host in "NAT" mode. The base image is sourced from the Fedora 34 Cloud.
 This is a creative extension of a brilliant solution published at: https://www.redhat.com/sysadmin/build-VM-fast-ansible
