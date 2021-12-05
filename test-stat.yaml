@@ -1,5 +1,5 @@
 ---
-- hosts: dmlap
+- hosts: ewok
   tasks:
   - name: Check if two files already exist
     stat:

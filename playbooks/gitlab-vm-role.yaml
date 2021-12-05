@@ -1,0 +1,8 @@
+- name: Install Gitlab on a Fedora 34 Server
+  hosts: sbx
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: install Gitlab role
+      include_role:
+        name: gitlab-vm-lab

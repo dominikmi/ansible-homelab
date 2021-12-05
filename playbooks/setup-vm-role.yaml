@@ -1,0 +1,8 @@
+- name: Deploys VM based on cloud image
+  hosts: localhost
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: Libvirt VM role
+      include_role:
+        name: libvirt-vm

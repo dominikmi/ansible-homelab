@@ -1,0 +1,5 @@
+---
+# defaults file for gitlab-vm-lab
+
+# Gitlab repository
+gitlab-ce_install_script_url: 'https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh'

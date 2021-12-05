@@ -1,0 +1,24 @@
+- hosts: sbx
+  tasks:
+    - name: Update the OS
+      dnf:
+        name: "*"
+        state: latest
+        update_cache: yes
+        update_only: yes
+      register: dnf_update_status
+
+    - name: Remove all useless packages
+      dnf:
+        autoremove: yes
+
+    - name: Reboot when dnf updated stuff
+      reboot:
+        connect_timeout: 5
+        reboot_timeout: 150
+        pre_reboot_delay: 0
+        post_reboot_delay: 30
+        test_command: whoami
+      when: dnf_update_status.changed
+  become: yes
+
