@@ -1,7 +1,7 @@
 An ansible driven homelab
 =========================
 
-An attempt to fully automate my homelab with Ansible. There's a bunch of playbooks and four roles creates so far. All pools and neccessary vars should be defined in `~/.ansible/inventory` before you run any of these below.
+An attempt to fully automate my homelab with Ansible. There's a bunch of playbooks and four roles creates so far. All pools and neccessary vars should be defined in `~/.ansible/inventory` before you run any of these below. Also, to run a given playbook on a single vm, I run it with limit `-l machine_name`.
 
 * `cfssl-pki-role.yaml` - Provision a vm with a host certificate based on self-signed CA
 * `gitlab-vm-role.yaml` -  Provision a vm with initial Gitlab-CE setup

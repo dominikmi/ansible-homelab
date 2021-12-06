@@ -1,5 +1,5 @@
 ---
-- hosts: powernuke
+- hosts: all
   tasks:
     - name: Add nextdns repo
       yum_repository:

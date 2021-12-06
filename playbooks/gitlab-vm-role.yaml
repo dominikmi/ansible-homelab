@@ -1,5 +1,5 @@
 - name: Install Gitlab on a Fedora 34 Server
-  hosts: sbx
+  hosts: sbxhosts
   gather_facts: yes
   become: yes
   tasks:
