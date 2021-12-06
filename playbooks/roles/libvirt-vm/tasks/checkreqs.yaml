@@ -1,9 +1,14 @@
 # checkreqs.yaml
 
-- name: See if all required pkgs are in place
+- name: See if all required pkgs are in place - to handle python3 libvirt and selinux binding calls
   package:
     name:
       - guestfs-tools
       - python3-libvirt
+      - python3-libselinux
+      - policycoreutils-python-utils
+      - python3-policycoreutils
+
     state: present
   become: yes
+

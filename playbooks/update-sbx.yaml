@@ -1,4 +1,4 @@
-- hosts: sbx
+- hosts: sbxhosts
   tasks:
     - name: Update the OS
       dnf:
