@@ -1,90 +1,17 @@
 ---
 # tasks file for libvirt-vm
-- name: See if all required pkgs are in place
-  package:
-    name:
-      - guestfs-tools
-      - python3-libvirt
-    state: present
-  become: yes
 
+- name: See if all required pkgs are in place
+  include_tasks: checkreqs.yaml
+ 
 - name: Get VMs list
-  community.libvirt.virt:
-    command: list_vms
-  register: existing_vms
-  changed_when: no
+  include_tasks: vmlist.yaml
 
 - name: Create VM if it does not exist
-  block:
-    - name: Download base image
-      get_url:
-        url: "{{ base_image_url }}"
-        dest: "/tmp/{{ base_image_name }}"
-        checksum: "sha256:{{ base_image_sha }}"
-
-    - name: Create a static network config in /tmp
-      ansible.builtin.template:
-        src: ifcfg-eth0.j2
-        dest: /tmp/ifcfg-eth0
-        owner: root
-        group: wheel
-        mode: '0640'
-
-    - name: Copy given base image to libvirt directory
-      copy:
-        src: "/tmp/{{ base_image_name }}"
-        dest: "{{ vm_pool_dir }}/{{ vm_name }}.qcow2"
-        force: no
-        remote_src: yes
-        mode: 0660
-      register: copy_results
-
-    - name: Resize the base image if needed by 10GB and extend the filesystem as well
-      shell: 
-        "{{ item }}"
-      with_items:
-        - qemu-img resize {{ vm_pool_dir }}/{{ vm_name }}.qcow2 +10G
-        - cp {{ vm_pool_dir }}/{{ vm_name }}.qcow2 {{ vm_pool_dir }}/{{ vm_name }}-orig.qcow2
-        - virt-resize --expand /dev/sda1 {{ vm_pool_dir }}/{{ vm_name }}-orig.qcow2 {{ vm_pool_dir }}/{{ vm_name }}.qcow2
-        - rm {{ vm_pool_dir }}/{{ vm_name }}-orig.qcow2
-      when: resize_vm | bool
-
-    - name: Configure the VM image
-      command: |
-        virt-customize -va {{ vm_pool_dir }}/{{ vm_name }}.qcow2 \
-        --hostname {{ vm_name }} \
-        --run-command 'useradd -m {{ user }}' \
-        --copy-in /etc/sudoers.d/{{ user }}_nopasswd:/etc/sudoers.d/
-        --copy-in /tmp/ifcfg-eth0:/etc/sysconfig/network-scripts/
-        --ssh-inject {{ user }}:file:{{ user_pub_ssh_key }} \
-        --uninstall cloud-init \
-        --selinux-relabel 
-      when: copy_results is changed
-
-    - name: Define the VM
-      community.libvirt.virt:
-        command: define
-        xml: "{{ lookup('template', 'sbx-template.xml.j2') }}"
-      when: "vm_name not in existing_vms.list_vms"
+  include_tasks: createvm.yaml
 
 - name: Ensure VM is started
-  community.libvirt.virt:
-    name: "{{ vm_name }}"
-    state: running
-  register: vm_start_results
-  until: "vm_start_results is success"
-  retries: 10
-  delay: 2
+  include_tasks: startvm.yaml
 
-- name: Delete temp image in /tmp
-  file:
-    path: "/tmp/{{ base_image_name }}"
-    state: absent
-  when: cleanup_tmp | bool
-
-- name: Delete ifcfg file in /tmp
-  file:
-    path: "/tmp/ifcfg-eth0"
-    state: absent
-  when: cleanup_tmp | bool
-
+- name: Delete temp files created in /tmp
+  include_tasks: garbagecoll.yaml

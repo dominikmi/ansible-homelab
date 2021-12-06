@@ -1,0 +1,9 @@
+# checkreqs.yaml
+
+- name: See if all required pkgs are in place
+  package:
+    name:
+      - guestfs-tools
+      - python3-libvirt
+    state: present
+  become: yes

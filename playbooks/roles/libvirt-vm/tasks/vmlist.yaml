@@ -1,0 +1,7 @@
+# vmlist.yaml get list of existing VMs
+
+- name: Get VMs list
+  community.libvirt.virt:
+    command: list_vms
+  register: existing_vms
+  changed_when: no

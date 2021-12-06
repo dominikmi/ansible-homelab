@@ -1,0 +1,10 @@
+# try to kick off the created VM
+
+- name: Fire up the VM
+  community.libvirt.virt:
+    name: "{{ vm_name }}"
+    state: running
+  register: vm_start_results
+  until: "vm_start_results is success"
+  retries: 10
+  delay: 2
