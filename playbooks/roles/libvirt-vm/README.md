@@ -58,8 +58,10 @@ There are currently two templates, which need to be customized to your own needs
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Example: run this role on your laptop, with KVM already installed, configured and running: 
+`ansible-playbook -K setup-vm-role.yaml -e "vm_name=myvmname user=myusername vm_ip=192.168.11.15 resize_vm=yes"`
 
+The playbook:
 ```
 - name: Deploys VM based on a FC34 cloud image
   hosts: localhost
