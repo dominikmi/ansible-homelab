@@ -1,5 +1,5 @@
 ---
-- hosts: powernuke
+- hosts: powerhost
   tasks:
     - name: Install virtualization
       dnf:
