@@ -1,3 +1,5 @@
+[![Ansible Lint](https://github.com/dominikmi/ansible-homelab/actions/workflows/ansible-lint.yml/badge.svg)](https://github.com/dominikmi/ansible-homelab/actions/workflows/ansible-lint.yml)
+
 ## ansible homelab set
 
 There's just a bunch of ansible playbooks and roles for setting up and maintaining a homelab.
