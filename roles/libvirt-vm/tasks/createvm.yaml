@@ -8,7 +8,8 @@
         dest: "/tmp/{{ base_image_name }}"
         checksum: "sha256:{{ base_image_sha }}"
 
-    - name: Create a static network config in /tmp
+    - name: Create a static network config in /tmp if vm_ip is defined
+      when: static_ip | bool
       ansible.builtin.template:
         src: ifcfg-eth0.j2
         dest: /tmp/ifcfg-eth0
@@ -35,7 +36,7 @@
         - rm {{ vm_pool_dir }}/{{ vm_name }}-orig.qcow2
       when: resize_vm | bool
 
-    - name: Configure the VM image
+    - name: Configure the VM image with static IP if vm_ip is defined
       command: |
         virt-customize -va {{ vm_pool_dir }}/{{ vm_name }}.qcow2 \
         --hostname {{ vm_name }} \
@@ -45,7 +46,18 @@
         --ssh-inject {{ user }}:file:{{ user_pub_ssh_key }} \
         --uninstall cloud-init \
         --selinux-relabel
-      when: copy_results is changed
+      when: copy_results is changed and static_ip is true
+
+    - name: Configure the vm image with DHCP if vm_ip is undefined
+      command: |
+        virt-customize -va {{ vm_pool_dir }}/{{ vm_name }}.qcow2 \
+        --hostname {{ vm_name }} \
+        --run-command 'useradd -m {{ user }}' \
+        --copy-in /etc/sudoers.d/{{ user }}_nopasswd:/etc/sudoers.d/
+        --ssh-inject {{ user }}:file:{{ user_pub_ssh_key }} \
+        --uninstall cloud-init \
+        --selinux-relabel
+      when: copy_results is changed and static_ip is false
 
     - name: Define the VM
       community.libvirt.virt:
