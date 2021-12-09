@@ -3,12 +3,11 @@
 ## ansible homelab set
 
 There's just a bunch of ansible playbooks and roles for setting up and maintaining a homelab. All host pools and neccessary hostvars should be defined in `~/.ansible/inventory` before you run any of these below. Also, to run a given playbook on a single vm, you should run it with limit `-l machine_name`.
-Also, since the directory `roles` should be relative to playbooks, if you want to retain this catalogue structure as is, don't forget to update `DEFAULT_ROLES_PATH` with the correct path to the `roles`.
 
 Roles
 -----
 
-I am currently working on the following roles:
+I am currently working on the following `roles`:
 
 - `cfssl-pki` : Automated cfssl based initial setup of internal CA, intermediate and server/peer/client certs for my internal domain, 
 - `gitlab-vm`: Initial Gitlab-CE setup (works in progress)
