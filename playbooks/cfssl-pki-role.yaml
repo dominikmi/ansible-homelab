@@ -7,7 +7,7 @@
   - name: Gather facts from all hosts
     setup:
     delegate_to: "{{ item }}"
-    delegate_facts: True
+    delegate_facts: true
     when: hostvars[item]['ansible_fqdn'] is not defined
     with_items: "{{ groups['all'] }}"
   

@@ -5,7 +5,7 @@
       dnf:
         name: snapd
         state: latest
-        update_cache: True
+        update_cache: true
       become: true
 
     - name: Start snapd service

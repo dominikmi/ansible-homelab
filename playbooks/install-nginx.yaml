@@ -5,5 +5,5 @@
       dnf:
         name: nginx
         state: latest
-        update_cache: True
+        update_cache: true
       become: yes
