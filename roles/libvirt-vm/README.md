@@ -1,13 +1,13 @@
 libvirt-vm
 ==========
 
-This role is intended to quickly bring up a local libvirt VM with assigned static IP within the pre-defined "default" network on the host in "NAT" mode. The base image is sourced from the Fedora 34 Cloud.
-This is a creative extension of a brilliant solution published at: https://www.redhat.com/sysadmin/build-VM-fast-ansible
+This role is intended to quickly bring up a local libvirt VM with assigned static IP within the pre-defined "default" network on the host in "NAT" mode. The base image is sourced from the Fedora 34 Cloud. If the `vm_ip` var is not passed the vm will be spun up with DHCP setup. This is an attempt to creatively extend a brilliantly simple solution published at: https://www.redhat.com/sysadmin/build-VM-fast-ansible
 
 Additional features:
 * Since the base FC34 image is only 5GB, I added optional extension of +10GB,
 * Static IP setup within the "default" network is provisioned through a networking-script (`ifcfg-eth0`)
-* The VM is provisioned with a user account and its public key from the host,
+* No `vm_ip` set will result in DHCP IP
+* The VM is provisioned with a user account and its public key from the host, 
 * This user gets set up in `sudoers` for any further works with host's Ansible scripts
 
 (Additional options to work on would be handling other cloud base images from CentOS or Ubuntu or choosing from different host virtual network definitions other than "default" one).
