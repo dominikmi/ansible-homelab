@@ -1,2 +1,25 @@
 ---
 # tasks file for sonarqube-host
+
+- name: Load variables based on OS type 
+  include_tasks: setosvars.yml
+
+- name: install postgresql on Ubuntu
+  apt:
+    name: 
+      - "{{ postgresql_pkg_server_name }}"
+      - "{{ postgresql_pkg_client_name }}"
+    state: present
+    update_cache: yes
+  when: ansible_distribution == 'Ubuntu'
+  notify: restart_postgresql
+
+- name: install postgresql on Fedora
+  dnf:
+    name: 
+      - "{{ postgresql_pkg_server_name }}"
+      - "{{ postgresql_pkg_client_name }}"
+    state: latest
+    update_cache: yes
+  when: ansible_distribution == 'Fedora'
+  notify: restart_postgresql

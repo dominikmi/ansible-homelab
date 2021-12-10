@@ -1,2 +1,11 @@
 ---
 # vars file for sonarqube-host
+
+sonarqube_src: ""
+sonarqube_path: /opt/sonarqube
+sonarqube_user: sonarqube
+sonarqube_svc_path: /etc/systemd/system/sonarqube.service
+sonarqube_socket: 
+
+postgresql_path:
+postgresql_socket: 

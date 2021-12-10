@@ -1,0 +1,6 @@
+# Directories and commands specific to Ubuntu
+
+host_tls_cert_store: '/etc/ssl/certs'
+host_tls_key_store: '/etc/ssl/private'
+postgresql_pkg_server_name: "postgresql-12"
+postgresql_pkg_client_name: "postgresql-client-12"
