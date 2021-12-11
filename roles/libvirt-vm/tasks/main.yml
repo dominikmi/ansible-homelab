@@ -1,6 +1,5 @@
 ---
 # tasks file for libvirt-vm
-
 - name: See if all required pkgs are in place
   include_tasks: checkreqs.yaml
  
