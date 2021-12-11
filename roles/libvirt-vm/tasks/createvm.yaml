@@ -1,5 +1,4 @@
 # Create vm if it does not exist yet - createvm.yaml
-
 - name: Create VM if it does not exist
   block:
     - name: Download base image
@@ -9,20 +8,20 @@
         checksum: "sha256:{{ base_image_sha }}"
 
     - name: Create a static network config in /tmp if vm_ip is defined
-      when: static_ip | bool
       ansible.builtin.template:
         src: ifcfg-eth0.j2
         dest: /tmp/ifcfg-eth0
         owner: root
         group: wheel
         mode: '0640'
+      when: static_ip | bool
 
     - name: Copy given base image to libvirt directory
       copy:
         src: "/tmp/{{ base_image_name }}"
         dest: "{{ vm_pool_dir }}/{{ vm_name }}.qcow2"
-        force: no
-        remote_src: yes
+        force: false
+        remote_src: true
         mode: 0660
       register: copy_results
 
@@ -64,4 +63,3 @@
         command: define
         xml: "{{ lookup('template', 'sbx-template.xml.j2') }}"
       when: "vm_name not in existing_vms.list_vms"
-
