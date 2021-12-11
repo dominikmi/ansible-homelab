@@ -3,11 +3,14 @@
   gather_facts: true
   become: true
   tasks:
-    - name: Setting static_ip if vm_ip is set
+    - name: Setting static_ip if vm_ip is not set
       set_fact:
         static_ip: false
       when: vm_ip is undefined
- 
+    - name: Setting static_ip if vm_ip is set
+      set_fact:
+        static_ip: true
+      when: vm_ip is defined
     - name: Libvirt VM role
       include_role:
         name: libvirt-vm
