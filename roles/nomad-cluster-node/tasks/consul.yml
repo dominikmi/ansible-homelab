@@ -3,20 +3,21 @@
   apt:
     name: consul
     state: present
-    update_cache: yes
+    update_cache: true
   when: ansible_distribution == 'Ubuntu' and consul_node is defined
 
 - name: Install consul on CentOS/Fedora
   dnf:
     name: consul
-    state: latest
-    update_cache: True
+    state: present
+    update_cache: true
   when: (ansible_distribution == 'Fedora' or ansible_distribution == 'CentOS') and (consul_node is defined)
 
-- name: install consul config        
+- name: install consul config
   template:
     src: roles/nomad-cluster-node/templates/consul.json.j2
     dest: "{{ consul_home }}/consul.json"
+    mode: 0644
   changed_when: true
   notify: restart_consul
   when: consul_node is defined

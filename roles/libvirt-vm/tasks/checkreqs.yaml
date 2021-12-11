@@ -8,7 +8,5 @@
       - python3-libselinux
       - policycoreutils-python-utils
       - python3-policycoreutils
-
     state: present
-  become: yes
-
+  become: true
