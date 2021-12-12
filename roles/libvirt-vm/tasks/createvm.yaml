@@ -40,8 +40,8 @@
         virt-customize -va {{ vm_pool_dir }}/{{ vm_name }}.qcow2 \
         --hostname {{ vm_name }} \
         --run-command 'useradd -m {{ user }}' \
-        --copy-in /etc/sudoers.d/{{ user }}_nopasswd:/etc/sudoers.d/
-        --copy-in /tmp/ifcfg-eth0:/etc/sysconfig/network-scripts/
+        --copy-in /etc/sudoers.d/{{ user }}_nopasswd:/etc/sudoers.d/ \
+        --copy-in /tmp/ifcfg-eth0:/etc/sysconfig/network-scripts/ \
         --ssh-inject {{ user }}:file:{{ user_pub_ssh_key }} \
         --uninstall cloud-init \
         --selinux-relabel
@@ -52,7 +52,7 @@
         virt-customize -va {{ vm_pool_dir }}/{{ vm_name }}.qcow2 \
         --hostname {{ vm_name }} \
         --run-command 'useradd -m {{ user }}' \
-        --copy-in /etc/sudoers.d/{{ user }}_nopasswd:/etc/sudoers.d/
+        --copy-in /etc/sudoers.d/{{ user }}_nopasswd:/etc/sudoers.d/ \
         --ssh-inject {{ user }}:file:{{ user_pub_ssh_key }} \
         --uninstall cloud-init \
         --selinux-relabel

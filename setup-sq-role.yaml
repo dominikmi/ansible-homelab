@@ -1,9 +1,9 @@
 - name: Deploy and run Sonarqube
   hosts: sbxhosts
-  gather_facts: yes
-  become: yes
+  gather_facts: true
+  become: true
   tasks:
     - name: Sonarqube role
       include_role:
         name: sonarqube-host
-  
+
