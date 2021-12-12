@@ -11,4 +11,3 @@
     path: "/tmp/ifcfg-eth0"
     state: absent
   when: cleanup_tmp | bool
-
