@@ -1,0 +1,19 @@
+[Unit]
+Description=SonarQube service
+After=syslog.target network.target postgresql.service
+
+[Service]
+Type=simple
+User={{ sonar_user }}
+Group={{ sonar_group }}
+PermissionsStartOnly=true
+ExecStart=/bin/nohup /opt/java/bin/java -Xms32m -Xmx32m -Djava.net.preferIPv4Stack=true -jar {{ sonar_home }}/lib/sonar-application-{{ sonar_version }}.jar
+StandardOutput=syslog
+LimitNOFILE={{ sonar_limit_nofile }}
+LimitNPROC={{ sonar_limit_nproc }}
+TimeoutStartSec=5
+Restart=always
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

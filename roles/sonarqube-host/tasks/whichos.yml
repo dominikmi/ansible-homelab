@@ -1,7 +1,6 @@
 # Get all prerequisites loaded and installed
-
-- name: Load a variable file based on the OS type
+- name: recognize the os
   include_vars: "{{ item }}"
   with_first_found:
-    - '{{ansible_distribution|lower}}-vars.yml'
+    - '{{ ansible_distribution|lower }}-vars.yml'
     - main.yml

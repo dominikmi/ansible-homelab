@@ -1,0 +1,16 @@
+---
+# Create sonar user
+
+- name: Create sonar grp
+  group:
+    name: "{{ sonar_user }}"
+    state: present
+
+- name: Create sonar user
+  ansible.builtin.user:
+    name: "{{ sonar_user }}"
+    group: "{{ sonar_user }}"
+    state: present
+    system: false
+    createhome: false
+    home: "{{ sonar_home }}"

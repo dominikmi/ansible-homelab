@@ -6,4 +6,3 @@
     - name: Sonarqube role
       include_role:
         name: sonarqube-host
-

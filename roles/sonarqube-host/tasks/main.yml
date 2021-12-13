@@ -1,25 +1,16 @@
 ---
 # tasks file for sonarqube-host
+- name: Recognize ostype
+  include_tasks: whichos.yml
 
-- name: Load variables based on OS type 
-  include_tasks: setosvars.yml
+- name: Install postgresql on Fedora
+  include_tasks: install-pgsql.yml
 
-- name: install postgresql on Ubuntu
-  apt:
-    name: 
-      - "{{ postgresql_pkg_server_name }}"
-      - "{{ postgresql_pkg_client_name }}"
-    state: present
-    update_cache: yes
-  when: ansible_distribution == 'Ubuntu'
-  notify: restart_postgresql
+- name: Install openjdk-11 on Fedora
+  include_tasks: install-openjdk-11.yml
 
-- name: install postgresql on Fedora
-  dnf:
-    name: 
-      - "{{ postgresql_pkg_server_name }}"
-      - "{{ postgresql_pkg_client_name }}"
-    state: latest
-    update_cache: yes
-  when: ansible_distribution == 'Fedora'
-  notify: restart_postgresql
+- name: Create sonar user
+  include_tasks: sonar-user.yml
+
+- name: Install sonarqube
+  include_tasks: install-sonar.yml

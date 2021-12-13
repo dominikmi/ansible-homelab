@@ -1,0 +1,10 @@
+# the server directive is Nginx's virtual host directive
+server {
+  # port to listen on. Can also be set to an IP:PORT
+  listen 80;
+  # sets the domain[s] that this vhost server requests for
+  server_name www.somecompany.com;
+  location / {
+    proxy_pass {{ sonar_host_url }}:{{ sonar_web_port }};
+  }
+}

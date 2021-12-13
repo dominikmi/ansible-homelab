@@ -1,6 +1,0 @@
-# system directories and commands specific to CentOS/Fedora/RHEL
-
-host_tls_cert_store: '/etc/pki/tls/certs'
-host_tls_key_store: '/etc/pki/tls/private'
-postgresql_pkg_server_name: "postgresql-server"
-postgresql_pkg_client_name: "postgresql"
