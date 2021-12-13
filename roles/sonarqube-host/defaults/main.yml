@@ -1,2 +1,40 @@
 ---
 # defaults file for sonarqube-host
+# place for host certs
+host_tls_cert_store: /etc/pki/tls/certs
+host_tls_key_store: /etc/pki/tls/private
+
+# postgresql packages name, pgsql 13.4 by default
+pgsql_pkg_server_name: "postgresql-server"
+pgsql_pkg_client_name: "postgresql"
+
+# openjdk 11 package name
+openjdk_11_pkg_name: "java-11-openjdk"
+
+# sonarqube general settings
+sonar_version: "9.2.1.49989"
+sonar_src: "https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-{{ sonar_version }}.zip"
+sonar_home: /opt/sonarqube
+sonar_user: sonar
+# sonar_pwd is set in hostvar at inventory
+sonar_group: "{{ sonar_user }}"
+sonar_path_data: "{{ sonar_home  }}/data"
+sonar_path_temp: "{{ sonar_home }}/tmp"
+sonar_path_config: "{{ sonar_home }}/conf"
+sonar_path_extensions: "{{ sonar_home }}/extensions"
+sonar_path_logs: "/var/log/{{ sonar_user }}"
+sonar_path_service: "/etc/systemd/system/{{ sonar_user }}.service"
+sonar_host_url: "https://sonar.{{ domain_name }}"
+sonar_web_port: 8000
+sonar_pgsql_user: sonar
+
+# sonarqube kernel settings
+sonar_limit_nofile: 131072
+sonar_limit_nproc: 8192
+sonar_vm_max_map_count: 524288
+sonar_fs_file_max: 131072
+
+# sonarqube pgsql settings
+sonar_jdbc_username: sonar
+sonar_jdbc_password: mypassword
+sonar_jdbc_url_jdbc: "postgresql://localhost/sonar"
