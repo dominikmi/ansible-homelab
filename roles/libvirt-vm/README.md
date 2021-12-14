@@ -69,7 +69,7 @@ Example: run this role on your laptop, with KVM already installed, configured an
 The playbook:
 
 ```yaml
-- name: Deploys VM based on a FC34 cloud image
+- name: Deploys VM based on a FC34 or CenOS Stream 8 cloud image
   hosts: localhost
   gather_facts: yes
   become: yes
