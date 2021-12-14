@@ -7,7 +7,7 @@
         dest: "/tmp/{{ fc_base_image_name }}"
         checksum: "sha256:{{ fc_base_image_sha }}"
       when: vm_os == "fedora"
-    
+
     - name: Download centos stream 8 base image
       get_url:
         url: "{{ ce_base_image_url }}"

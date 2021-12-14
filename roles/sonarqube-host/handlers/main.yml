@@ -1,7 +1,18 @@
 ---
 # handlers file for sonarqube-host
 
-- name: restart_postgresql
-  ansible.builtin.service:
+- name: enable_postgresql
+  service:
     name: postgresql
-    state: restarted
+    enabled: true
+
+- name: init_postgresql
+  command: |
+    /usr/bin/postgresql-setup --initdb
+  register: postgres_initialized
+
+- name: start_postgresql
+  service:
+    name: postgresql
+    state: started
+  register: postgresql_started

@@ -1,8 +1,24 @@
 ---
 # Install basic pgsql
-- name: install postgresql on Fedora
+- name: install postgresql
   dnf:
     name: ["{{ pgsql_pkg_server_name }}", "{{ pgsql_pkg_client_name }}"]
     state: present
     update_cache: true
-  notify: restart_postgresql
+
+- name: Enable postgresql
+  service:
+    name: postgresql
+    enabled: true
+  notify:
+    - enable_postgresql
+    - init_postgresql
+  when: postgresql_initialized is undefined
+
+- name: Start postgresql
+  service:
+    name: postgresql
+    state: started
+  notify: start_postgresql
+  when: postgresql_started is undefined
+
