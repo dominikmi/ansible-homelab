@@ -1,11 +1,19 @@
 # Create vm if it does not exist yet - createvm.yaml
 - name: Create VM if it does not exist
   block:
-    - name: Download base image
+    - name: Download fc34 base image
       get_url:
-        url: "{{ base_image_url }}"
-        dest: "/tmp/{{ base_image_name }}"
-        checksum: "sha256:{{ base_image_sha }}"
+        url: "{{ fc_base_image_url }}"
+        dest: "/tmp/{{ fc_base_image_name }}"
+        checksum: "sha256:{{ fc_base_image_sha }}"
+      when: vm_os == "fedora"
+    
+    - name: Download centos stream 8 base image
+      get_url:
+        url: "{{ ce_base_image_url }}"
+        dest: "/tmp/{{ ce_base_image_name }}"
+        checksum: "sha256:{{ ce_base_image_sha }}"
+      when: vm_os == "centos"
 
     - name: Create a static network config in /tmp if vm_ip is defined
       ansible.builtin.template:
@@ -18,12 +26,23 @@
 
     - name: Copy given base image to libvirt directory
       copy:
-        src: "/tmp/{{ base_image_name }}"
+        src: "/tmp/{{ fc_base_image_name }}"
         dest: "{{ vm_pool_dir }}/{{ vm_name }}.qcow2"
         force: false
         remote_src: true
         mode: 0660
       register: copy_results
+      when: vm_os == "fedora"
+
+    - name: Copy given base image to libvirt directory
+      copy:
+        src: "/tmp/{{ ce_base_image_name }}"
+        dest: "{{ vm_pool_dir }}/{{ vm_name }}.qcow2"
+        force: false
+        remote_src: true
+        mode: 0660
+      register: copy_results
+      when: vm_os == "centos"
 
     - name: Resize the base image if needed by 10GB and extend the filesystem as well
       shell:

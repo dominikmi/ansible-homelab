@@ -1,13 +1,22 @@
 # Delete /tmp if cleanup was set to "yes"
 
-- name: Delete temp image in /tmp
-  file:
-    path: "/tmp/{{ base_image_name }}"
-    state: absent
-  when: cleanup_tmp | bool
+- name: Cleanup in /tmp
+  block:
+    - name: Delete temp image in /tmp
+      file:
+        path: "/tmp/{{ fc_base_image_name }}"
+        state: absent
+      when: vm_os == "fedora"
 
-- name: Delete ifcfg file in /tmp
-  file:
-    path: "/tmp/ifcfg-eth0"
-    state: absent
+    - name: Delete temp image in /tmp
+      file:
+        path: "/tmp/{{ ce_base_image_name }}"
+        state: absent
+      when: vm_os == "centos"
+
+    - name: Delete ifcfg file in /tmp
+      file:
+        path: "/tmp/ifcfg-eth0"
+        state: absent
+
   when: cleanup_tmp | bool

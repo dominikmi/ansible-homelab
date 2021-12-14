@@ -1,8 +1,11 @@
 ---
 # defaults file for libvirt-vm
-base_image_name: Fedora-Cloud-Base-34-1.2.x86_64.qcow2
-base_image_url: https://download.fedoraproject.org/pub/fedora/linux/releases/34/Cloud/x86_64/images/{{ base_image_name }}
-base_image_sha: b9b621b26725ba95442d9a56cbaa054784e0779a9522ec6eafff07c6e6f717ea
+fc_base_image_name: Fedora-Cloud-Base-34-1.2.x86_64.qcow2
+fc_base_image_url: https://download.fedoraproject.org/pub/fedora/linux/releases/34/Cloud/x86_64/images/{{ fc_base_image_name }}
+fc_base_image_sha: b9b621b26725ba95442d9a56cbaa054784e0779a9522ec6eafff07c6e6f717ea
+ce_base_image_name: CentOS-Stream-GenericCloud-8-20210603.0.x86_64.qcow2
+ce_base_image_url: https://cloud.centos.org/centos/8-stream/x86_64/images/{{ ce_base_image_name }}
+ce_base_image_sha: 8e22e67687b81e38c7212fc30c47cb24cbc4935c0f2459ed139f498397d1e7cd
 vm_pool_dir: "/var/lib/libvirt/images"
 vm_name: fc34-labhost
 vm_vcpus: 2
@@ -11,3 +14,4 @@ vm_net: default
 cleanup_tmp: false
 user_pub_ssh_key: /home/{{ user }}/.ssh/id_rsa.pub
 resize_vm: false
+vm_os: fedora
