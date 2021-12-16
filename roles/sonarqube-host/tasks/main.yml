@@ -14,3 +14,6 @@
 
 - name: Install sonarqube
   include_tasks: install-sonar.yml
+
+- name: Install nginx
+  include_tasks: install-nginx.yml

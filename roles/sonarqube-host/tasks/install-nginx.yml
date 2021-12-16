@@ -1,0 +1,20 @@
+---
+# install nginx
+
+- name: Install nginx
+  dnf:
+    name: nginx
+    state: present
+    update_cache: true
+
+- name: Configure proxy for sonarqube
+  template:
+    src: roles/sonarqube-host/templates
+    dest: /etc/nginx/conf.d/
+    mode: '0640'
+
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
+  register: nginx_started
