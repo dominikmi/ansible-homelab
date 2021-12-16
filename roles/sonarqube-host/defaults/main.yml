@@ -4,10 +4,6 @@
 host_tls_cert_store: /etc/pki/tls/certs
 host_tls_key_store: /etc/pki/tls/private
 
-# postgresql packages name, pgsql 13.4 by default
-pgsql_pkg_server_name: "postgresql-server"
-pgsql_pkg_client_name: "postgresql"
-
 # openjdk 11 package name
 openjdk_11_pkg_name: "java-11-openjdk"
 
@@ -38,3 +34,11 @@ sonar_fs_file_max: 131072
 sonar_jdbc_username: sonar
 sonar_jdbc_password: mypassword
 sonar_jdbc_url_jdbc: "postgresql://localhost/sonar"
+
+# postgresql vars, with default pgsql 13.4 on Fedora and 10.17 for CentOS Stream 8
+pgsql_pkg_server_name: "postgresql-server"
+pgsql_pkg_client_name: "postgresql"
+pgsql_user: "postgres"
+pgsql_sonar_db: "{{ sonar_user }}"
+pgsql_sonar_user: "{{ sonar_user }}"
+pgsql_sonar_pwd: "{{ sonar_pwd }}"
