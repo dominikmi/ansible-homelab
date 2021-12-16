@@ -1,0 +1,7 @@
+# system directories and commands specific to CentOS/Fedora/RHEL
+
+ca_trust_store: '/etc/pki/ca-trust/source/anchors'
+update_ca_cmd: 'update-ca-trust extract'
+host_tls_cert_store: '/etc/pki/tls/certs'
+host_tls_key_store: '/etc/pki/tls/private'
+ca_cert_suffix: 'pem'
