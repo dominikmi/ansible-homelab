@@ -16,6 +16,6 @@ server {
     client_max_body_size    8m;
     client_body_buffer_size 128k;
 
-    proxy_redirect http://localhost:9000 http://"{{ ansible_hostname }}";
+    proxy_redirect http://localhost:9000 http://{{ ansible_fqdn }};
   }
 }

@@ -9,12 +9,8 @@
 
 - name: Configure proxy for sonarqube
   template:
-    src: roles/sonarqube-host/templates/sonar-nginx.conf.j2
-    dest: /etc/nginx/conf.d/
+    src: "roles/sonarqube-host/templates/sonar-nginx.conf.j2"
+    dest: "/etc/nginx/conf.d"
     mode: '0640'
+  notify: restart_nginx
 
-- name: Restart nginx
-  service:
-    name: nginx
-    state: restarted
-  register: nginx_started

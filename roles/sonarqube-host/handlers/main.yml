@@ -16,3 +16,9 @@
     name: postgresql
     state: started
   register: postgresql_started
+
+- name: restart_nginx
+  service:
+    name: nginx
+    state: restarted
+  register: nginx_restarted
