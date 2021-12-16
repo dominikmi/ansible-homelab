@@ -15,8 +15,8 @@
 # User credentials.
 # Permissions to create tables, indices and triggers must be granted to JDBC user.
 # The schema must be created first.
-sonar.jdbc.username= {{ sonar_user }}
-sonar.jdbc.password= {{ sonar_pwd }}
+sonar.jdbc.username= {{ sonar_pgsql_user }}
+sonar.jdbc.password= {{ sonar_pgsql_pwd }}
 
 #----- Embedded Database (default)
 # H2 embedded database server listening port, defaults to 9092

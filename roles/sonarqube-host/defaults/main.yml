@@ -23,6 +23,7 @@ sonar_path_service: "/etc/systemd/system/{{ sonar_user }}.service"
 sonar_host_url: "https://sonar.{{ domain_name }}"
 sonar_web_port: 8000
 sonar_pgsql_user: sonar
+sonar_pgsql_pwd: "{{ sonar_pwd }}"
 
 # sonarqube kernel settings
 sonar_limit_nofile: 131072
