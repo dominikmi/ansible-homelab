@@ -9,11 +9,11 @@ Roles
 
 I am currently working on the following `roles`:
 
-- `cfssl-pki` : Automated cfssl based initial setup of internal CA, intermediate and server/peer/client certs for my internal domain, 
-- `gitlab-vm`: Initial Gitlab-CE setup (works in progress)
-- `livirt-vm` : to quiclky spin up a KVM vm with static IP and further customized settings, 
-- `nomad-cluster-node` : A Hashicorp Nomad cluster setup with Consul and Vault, initial configs provisioned.
-- `sonarqube-host` : SonarQube with postgresql and nginx.
+- `cfssl-pki` : Automated cfssl based initial setup of internal CA, intermediate and server/peer/client certs for my internal domain,
+- `gitlab-vm`: Initial Gitlab-CE setup, (*works in progress*)
+- `livirt-vm` : to quickly spin up a KVM vm (FC34 or CentOS Stream 8) with static IP and further customized settings,
+- `nomad-cluster-node` : A Hashicorp Nomad cluster setup with Consul and Vault, initial configs provisioned, (*needs some refinements*)
+- `sonarqube-host` : SonarQube with postgresql and nginx. (*works in progress*)
 
 Playbooks
 ---------
