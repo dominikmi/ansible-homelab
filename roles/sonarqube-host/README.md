@@ -5,6 +5,11 @@ Sonarqube-host is a role through which you are able to install and run Sonarqube
 
 (WIP: front-end nginx and the TLS certs provisioning)
 
+Dependencies
+------------
+
+For setting up Postgresql, you need to `ansible-galaxy collection install community.postgresql`
+
 Requirements
 ------------
 
