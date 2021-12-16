@@ -1,9 +1,9 @@
 sonarqube-host
 ==============
 
-Sonarqube-host is a role through which you are able to install and run Sonarqube with postgresql at the back-end. The web component is accessible through nginx rev-proxy with TLS set on. This role is designed to work on Fedora 34 server and Fedora 34 cloud image. Although, it can be easily customized to run on Debian/Ubuntu.
+Sonarqube-host is a role through which you are able to install and run Sonarqube with postgresql at the back-end. The web component is accessible through nginx rev-proxy with TLS set on. This role is designed to work on CentOS Stream 8, Fedora 34 server and Fedora 34 cloud image. Although, it can be easily customized to run on Debian/Ubuntu.
 
-(WIP: pgsql, nginx and the TLS certs provisioning)
+(WIP: front-end nginx and the TLS certs provisioning)
 
 Requirements
 ------------
