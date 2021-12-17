@@ -1,0 +1,6 @@
+---
+# Set SELinux permissive on the lab vm
+- name: Enable SELinux in enforcing mode
+  ansible.posix.selinux:
+    policy: targeted
+    state: permissive
