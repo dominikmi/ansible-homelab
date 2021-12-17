@@ -43,3 +43,6 @@ pgsql_user: "postgres"
 pgsql_sonar_db: "{{ sonar_user }}"
 pgsql_sonar_user: "{{ sonar_user }}"
 pgsql_sonar_pwd: "{{ sonar_pwd }}"
+
+# nginx config path
+nginx_path_conf: /etc/nginx/conf.d
