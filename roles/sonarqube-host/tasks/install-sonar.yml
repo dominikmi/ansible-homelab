@@ -5,6 +5,7 @@
   get_url:
     url: "{{ sonar_src }}"
     dest: "/opt/sonarqube-{{ sonar_version }}.zip"
+  register: sonar_ver_changed
 
 - name: Unpack sonarqube
   unarchive:
@@ -53,3 +54,15 @@
     mode: '0750'
     owner: "{{ sonar_user }}"
     group: wheel
+
+- name: Reload and restart sonar when ver changed
+  systemd:
+    name: "{{ sonar_user }}"
+    state: restarted
+    daemon_reload: true
+  when: sonar_ver_changed | bool
+
+- name: Run sonar service
+  systemd:
+    name: "{{ sonar_user }}"
+    enabled: true

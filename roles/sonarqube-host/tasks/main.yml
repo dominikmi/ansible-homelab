@@ -5,7 +5,7 @@
 
 - name: Set SELinux permissive
   include_tasks: setselinper.yml
-  when: ostype == "fedora" or ostype == "centos"
+  when: ansible_distribution  == "Fedora" or ansible_distribution == "Centos"
 
 - name: Install postgresql on Fedora
   include_tasks: install-pgsql.yml
