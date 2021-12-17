@@ -46,3 +46,6 @@ pgsql_sonar_pwd: "{{ sonar_pwd }}"
 
 # nginx config path
 nginx_path_conf: /etc/nginx/conf.d
+
+# elasticsearch conf file
+elastic_path_conf: /usr/lib/sysctl.d/99-elastic.conf

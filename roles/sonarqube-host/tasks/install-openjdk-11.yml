@@ -1,7 +1,0 @@
----
-# install openjdk-11
-- name: Install openjdk-11
-  dnf:
-    name: java-11-openjdk
-    state: present
-    update_cache: true

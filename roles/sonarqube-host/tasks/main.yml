@@ -3,15 +3,11 @@
 - name: Recognize ostype
   include_tasks: whichos.yml
 
-- name: Set SELinux permissive
-  include_tasks: setselinper.yml
-  when: ansible_distribution  == "Fedora" or ansible_distribution == "Centos"
+- name: Set prerequisites for sonar and pgsql
+  include_tasks: prerequisites.yml
 
 - name: Install postgresql on Fedora
   include_tasks: install-pgsql.yml
-
-- name: Install openjdk-11 on Fedora
-  include_tasks: install-openjdk-11.yml
 
 - name: Create sonar user
   include_tasks: sonar-user.yml

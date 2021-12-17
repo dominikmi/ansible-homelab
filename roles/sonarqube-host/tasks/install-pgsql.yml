@@ -22,12 +22,6 @@
   notify: start_postgresql
   when: postgresql_started is undefined
 
-- name: Install psycopg2 binary for pg module
-  pip:
-    name: psycopg2-binary
-    executable: pip3
-
-
 - name: Create a new sonar db with UTF-8 encoding
   become: true
   become_user: "{{ pgsql_user }}"
