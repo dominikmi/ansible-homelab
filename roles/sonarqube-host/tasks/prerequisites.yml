@@ -33,7 +33,6 @@
     - ulimit -n 131072
     - ulimit -u 8192
 
-
 - name: Put sysctl settings for elasticsearch
   template:
     src: roles/sonarqube-host/templates/elastic.conf.j2
