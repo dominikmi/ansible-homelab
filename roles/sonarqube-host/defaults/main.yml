@@ -8,7 +8,7 @@ host_tls_key_store: /etc/pki/tls/private
 openjdk_11_pkg_name: "java-11-openjdk"
 
 # sonarqube general settings
-sonar_version: "9.2.2.50622"
+sonar_version: "9.2.3.50713"
 sonar_src: "https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-{{ sonar_version }}.zip"
 sonar_home: /opt/sonarqube
 sonar_user: sonar
