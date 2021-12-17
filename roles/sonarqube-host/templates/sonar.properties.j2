@@ -15,8 +15,8 @@
 # User credentials.
 # Permissions to create tables, indices and triggers must be granted to JDBC user.
 # The schema must be created first.
-sonar.jdbc.username= {{ sonar_pgsql_user }}
-sonar.jdbc.password= {{ sonar_pgsql_pwd }}
+sonar.jdbc.username={{ sonar_pgsql_user }}
+sonar.jdbc.password={{ sonar_pgsql_pwd }}
 
 #----- Embedded Database (default)
 # H2 embedded database server listening port, defaults to 9092
@@ -33,7 +33,7 @@ sonar.jdbc.password= {{ sonar_pgsql_pwd }}
 
 #----- PostgreSQL 9.6 or greater
 # By default the schema named "public" is used. It can be overridden with the parameter "currentSchema".
-sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube?currentSchema={{ sonar_user }}
+sonar.jdbc.url={{ sonar_jdbc_url }}?currentSchema={{ sonar_user }}
 
 
 #----- Microsoft SQLServer 2014/2016/2017/2019 and SQL Azure
