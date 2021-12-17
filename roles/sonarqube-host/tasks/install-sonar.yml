@@ -42,7 +42,7 @@
 - name: Sonar systemd service
   template:
     src: roles/sonarqube-host/templates/sonarqube.service.j2
-    dest: "{{ sonar_path_service }}/sonarqube.service"
+    dest: "{{ sonar_path_service }}"
     mode: '0640'
     owner: root
     group: wheel
