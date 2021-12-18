@@ -66,3 +66,4 @@
   systemd:
     name: "{{ sonar_user }}"
     enabled: true
+  notify: sonar_restarted

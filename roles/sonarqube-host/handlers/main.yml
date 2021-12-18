@@ -17,6 +17,12 @@
     state: started
   register: postgresql_started
 
+- name: restart_sonarqube
+  service:
+    name: "{{ sonar_user }}"
+    state: restarted
+  register: sonar_restarted
+
 - name: restart_nginx
   service:
     name: nginx
