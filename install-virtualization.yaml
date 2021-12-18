@@ -4,6 +4,6 @@
     - name: Install virtualization
       dnf:
         name: '@virtualization'
-        state: latest
-        update_cache: True
+        state: present
+        update_cache: true
       become: true

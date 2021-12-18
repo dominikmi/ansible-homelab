@@ -1,9 +1,0 @@
----
-- hosts: all
-  tasks:
-    - name: Install nginx
-      dnf:
-        name: nginx
-        state: present
-        update_cache: true
-      become: yes

@@ -10,7 +10,6 @@
     delegate_facts: true
     when: hostvars[item]['ansible_fqdn'] is not defined
     with_items: "{{ groups['all'] }}"
-  
+
   roles:
     - role: cfssl-pki
-

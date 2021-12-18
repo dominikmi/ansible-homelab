@@ -1,13 +1,13 @@
 - hosts: labhosts
   tasks:
-    - name: Update cache 
+    - name: Update cache
       apt:
-       update_cache: yes
-         
+        update_cache: true
+
     - name: Upgrade all packages on servers
-      apt: 
+      apt:
         name: "*"
-        state: latest
+        state: present
     - name: Reboot
       reboot:
   become: true

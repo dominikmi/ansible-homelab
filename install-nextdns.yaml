@@ -14,6 +14,6 @@
     - name: Install nextDNS
       dnf:
         name: nextdns
-        state: latest
+        state: present
         update_cache: true
       become: true
