@@ -5,8 +5,8 @@
   stat:
     path: '{{ item }}'
   loop:
-    - '{{cfssl_home}}/{{cfssl_ca_prefix}}.pem'
-    - '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.pem'
+    - '{{ cfssl_home }}/{{ cfssl_ca_prefix }}.pem'
+    - '{{ cfssl_home }}/{{ cfssl_intermediate_ca_prefix }}.pem'
   register: ca_status
   run_once: true
 
@@ -14,8 +14,8 @@
   delegate_to: '{{ ca_store_host }}'
   shell: 'cfssl gencert -initca {{ cfssl_config_dir }}/{{ cfssl_ca_config_file }} | cfssljson -bare {{ cfssl_ca_prefix }}'
   args:
-    chdir: '{{cfssl_home}}'
-    creates: 
+    chdir: '{{ cfssl_home }}'
+    creates:
       - '{{ cfssl_ca_prefix }}.pem'
   when: ca_status.results.0.stat.exists == false
   run_once: true
@@ -23,9 +23,9 @@
 - name: Create Intermediate CA & sign it
   delegate_to: '{{ ca_store_host }}'
   shell: 'cfssl gencert -initca {{ cfssl_config_dir }}/{{ cfssl_interm_config_file }} | cfssljson -bare {{ cfssl_intermediate_ca_prefix }} && cfssl sign -ca {{ cfssl_ca_prefix }}.pem -ca-key {{ cfssl_ca_prefix }}-key.pem -config {{ cfssl_config_dir }}/{{ cfssl_config_file }} -profile {{ cfssl_intermediate_ca_prefix }} {{ cfssl_intermediate_ca_prefix }}.csr | cfssljson -bare {{ cfssl_intermediate_ca_prefix }}'
-  args: 
-    chdir: '{{cfssl_home}}'
-    creates: 
+  args:
+    chdir: '{{ cfssl_home }}'
+    creates:
       - '{{ cfssl_intermediate_ca_prefix }}.pem'
   when: ca_status.results.1.stat.exists == false
   run_once: true
@@ -35,8 +35,8 @@
   stat:
     path: '{{ item }}'
   loop:
-    - '{{cfssl_home}}/{{cfssl_ca_prefix}}.crt'
-    - '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.crt'
+    - '{{ cfssl_home }}/{{ cfssl_ca_prefix }}.crt'
+    - '{{ cfssl_home }}/{{ cfssl_intermediate_ca_prefix }}.crt'
   register: ca_status
   run_once: true
 
@@ -44,31 +44,31 @@
   delegate_to: '{{ ca_store_host }}'
   shell: cp '{{ item.src }}' '{{ item.dest }}'
   loop:
-    - {src: '{{cfssl_home}}/{{cfssl_ca_prefix}}.pem', dest: '{{cfssl_home}}/{{cfssl_ca_prefix}}.crt'}
-    - {src: '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.pem', dest: '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.crt'}
-  when: ca_status.results.0.stat.exists == false and ca_status.results.1.stat.exists == false
+    - {src: '{{ cfssl_home }}/{{ cfssl_ca_prefix }}.pem', dest: '{{ cfssl_home }}/{{ cfssl_ca_prefix }}.crt'}
+    - {src: '{{ cfssl_home }}/{{ cfssl_intermediate_ca_prefix }}.pem', dest: '{{ cfssl_home }}/{{ cfssl_intermediate_ca_prefix }}.crt'}
+  when: not ca_status.results.0.stat.exists and not ca_status.results.1.stat.exists
   run_once: true
 
 - name: Copy CA & intermediate to the controller
   delegate_to: '{{ ca_store_host }}'
-  fetch: 
-    src: '{{ item }}' 
-    dest: '{{ cfssl_buffer }}' 
-    flat: yes
-  loop: 
-    - '{{cfssl_home}}/{{cfssl_ca_prefix}}.pem'
-    - '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.pem'
-    - '{{cfssl_home}}/{{cfssl_ca_prefix}}.crt'
-    - '{{cfssl_home}}/{{cfssl_intermediate_ca_prefix}}.crt'    
-  run_once: true  
+  fetch:
+    src: '{{ item }}'
+    dest: '{{ cfssl_buffer }}'
+    flat: true
+  loop:
+    - '{{ cfssl_home }}/{{ cfssl_ca_prefix }}.pem'
+    - '{{ cfssl_home }}/{{ cfssl_intermediate_ca_prefix }}.pem'
+    - '{{ cfssl_home }}/{{ cfssl_ca_prefix }}.crt'
+    - '{{ cfssl_home }}/{{ cfssl_intermediate_ca_prefix }}.crt'
+  run_once: true
 
 - name: Distribute ca & intermediate across all
-  copy: 
-    src: '{{ item }}' 
+  copy:
+    src: '{{ item }}'
     dest: '{{ ca_trust_store }}'
   loop:
     - '{{cfssl_buffer}}{{cfssl_ca_prefix}}.{{ca_cert_suffix}}'
     - '{{cfssl_buffer}}{{cfssl_intermediate_ca_prefix}}.{{ca_cert_suffix}}'
-  
+
 - name: Update ca stores on hosts
   command: '{{update_ca_cmd}}'
