@@ -22,22 +22,24 @@
   notify: start_postgresql
   when: postgresql_started is undefined
 
-- name: Create a new sonar db with UTF-8 encoding
-  become: true
-  become_user: "{{ pgsql_user }}"
-  postgresql_db:
-    name: "{{ pgsql_sonar_db }}"
-    encoding: UTF-8
-    template: template0
-    state: present
-  register: sonar_db_created
+- name: Create sonar user and db in postgresql
+  block:
 
-- name: Create sonarqube db user and assign it to the sonar db
-  become: true
-  become_user: "{{ pgsql_user }}"
-  postgresql_user:
-    db: "{{ pgsql_sonar_db }}"
-    name: "{{ pgsql_sonar_db }}"
-    password: "{{ pgsql_sonar_pwd }}"
-    priv: ALL
-  when: sonar_db_created | bool
+    - name: Create sonarqube db user and assign it to the sonar db
+      become: true
+      become_user: "{{ pgsql_user }}"
+      postgresql_user:
+        name: "{{ pgsql_sonar_user }}"
+        password: "{{ pgsql_sonar_pwd }}"
+        state: present
+
+    - name: Create a new sonar db with UTF-8 encoding
+      become: true
+      become_user: "{{ pgsql_user }}"
+      postgresql_db:
+        name: "{{ pgsql_sonar_db }}"
+        encoding: UTF-8
+        template: template0
+        owner: "{{ pgsql_sonar_user }}"
+        state: present
+
