@@ -1,4 +1,5 @@
 ---
+# Use for initial deployment across your lab hosts
 - name: use cfssl-pki role playbook
   hosts: all
   become: true
