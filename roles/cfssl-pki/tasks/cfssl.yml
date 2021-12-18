@@ -8,7 +8,7 @@
 
 - name: Check if the ssl config directory exists
   stat:
-    path: "{{ cfssl_config_dir }}" 
+    path: "{{ cfssl_config_dir }}"
   register: config_dir
 
 - name: Create ssl/config folder in /opt
@@ -19,7 +19,7 @@
     owner: root
     group: root
     mode: 0755
-    recurse: yes
+    recurse: true
   when: not config_dir.stat.exists and ca_store == 'true'
   run_once: true
 

@@ -1,14 +1,14 @@
 ---
 # tasks file for cfssl-pki
 
-- name: Load variables based on OS type 
+- name: Load variables based on OS type
   include_tasks: osvars.yml
 
 - name: Install go on ca host
   include_tasks: go.yml
   when: ca_store == 'true'
 
-- name: Install cfssl & prepare cfssl configs 
+- name: Install cfssl & prepare cfssl configs
   include_tasks: cfssl.yml
   when: ca_store == 'true'
 
@@ -17,4 +17,3 @@
 
 - name: Create & distribute host certs
   include_tasks: hostcerts.yml
-  

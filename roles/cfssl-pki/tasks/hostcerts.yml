@@ -6,15 +6,6 @@
     src: 'roles/cfssl-pki/templates/host_cert_conf.json.j2'
     dest: '{{ cfssl_config_dir }}/{{ ansible_hostname }}.json'
 
-#- name: Check if host certs already exist
-#  delegate_to: '{{ ca_store_host }}'
-#  stat:
-#    path: '{{cfssl_home}}/{{ item }}'
-#  loop:
-#    - '{{ansible_hostname}}-{{cert_role}}.pem'
-#    - '{{ansible_hostname}}-{{cert_role}}-key.pem'
-#  register: host_cert_status
-
 - name: Generate host certs
   delegate_to: '{{ ca_store_host }}'
   shell: cfssl gencert -ca {{ cfssl_intermediate_ca_prefix }}.pem -ca-key {{ cfssl_intermediate_ca_prefix }}-key.pem -config {{ cfssl_config_dir }}/{{ cfssl_config_file }} -profile={{ cert_role }} {{ cfssl_config_dir }}/{{ ansible_hostname }}.json | cfssljson -bare {{ ansible_hostname }}-{{ cert_role }}
@@ -27,11 +18,11 @@
 
 - name: Copy host certs & keys to the controller
   delegate_to: '{{ ca_store_host }}'
-  fetch: 
-    src: '{{ item }}' 
-    dest: '{{ cfssl_buffer }}' 
-    flat: yes
-  loop: 
+  fetch:
+    src: '{{ item }}'
+    dest: '{{ cfssl_buffer }}'
+    flat: true
+  loop:
     - "{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}.pem"
     - "{{cfssl_home}}/{{ansible_hostname}}-{{cert_role}}-key.pem"
 
