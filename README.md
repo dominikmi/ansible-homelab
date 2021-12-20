@@ -21,9 +21,7 @@ Playbooks
 * `cfssl-pki-role.yaml` - Provision a vm with a host certificate based on self-signed CA
 * `gitlab-vm-role.yaml` -  Provision a vm with initial Gitlab-CE setup
 * `install-nextdns.yaml` - Provision a vm with NextDNS setup
-* `install-nginx.yaml` - Prosivion a vm with vanilla nginx 
 * `install-python-selinux-binds.yaml` - Make sure that a vm has neccessary python bindings if SELinux is in place
-* `install-snap.yaml` - Provision a vm with snap if needed
 * `install-virtualization.yaml` - Provision a vm/host with a @virtualization package
 * `nomad-cluster-role.yaml` - Provision a vm with initial Nomad/Consul/Vault setup
 * `setup-sudouser.yaml` - Get your user account ready to work with Ansible
