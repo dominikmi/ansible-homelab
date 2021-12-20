@@ -1,8 +1,13 @@
 ---
 # defaults file for sonarqube-host
-# place for host certs
+# Local DNS setup
+host_local_dns: 192.168.130.1
+
+# TLS/SSL setup
 host_tls_cert_store: /etc/pki/tls/certs
 host_tls_key_store: /etc/pki/tls/private
+host_tls_port: 443
+host_tls_parameters: "{{ host_tls_certs_store }}/dhparameters.pem"
 
 # openjdk 11 package name
 openjdk_11_pkg_name: "java-11-openjdk"
