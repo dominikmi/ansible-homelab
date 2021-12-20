@@ -42,4 +42,3 @@
         template: template0
         owner: "{{ pgsql_sonar_user }}"
         state: present
-
