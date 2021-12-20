@@ -14,7 +14,6 @@ Already accomplished steps this role performs:
 7. Distributes the CA and Intermediate certs across all hosts.
 8. Host certs & keys distribution across the hosts,
 
-**[ This role is not ready yet ]**
 
 To Do
 -----
@@ -36,11 +35,33 @@ Most vars used to fill in templates are defined in role's `vars` directory. Ther
 Example Playbook
 ----------------
 
-```
+To generate a host cert and provision vm with it:
+
+```yaml
 ---
 - name: use cfssl-pki role playbook
-  hosts: <your_ca_store_host>
+  hosts: <your_host>
   become: true
+
+  roles:
+    - role: cfssl-pki
+```
+
+To deploy whole setup, with hostvars: `ca_store` and cert roles (all hosts must be up):
+
+```yaml
+# Use for initial deployment across your lab hosts
+- name: use cfssl-pki role playbook
+  hosts: all
+  become: true
+
+  pre_tasks:
+  - name: Gather facts from all hosts
+    setup:
+    delegate_to: "{{ item }}"
+    delegate_facts: true
+    when: hostvars[item]['ansible_fqdn'] is not defined
+    with_items: "{{ groups['all'] }}"
 
   roles:
     - role: cfssl-pki

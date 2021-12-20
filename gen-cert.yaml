@@ -1,0 +1,8 @@
+---
+# Use for initial deployment across your lab hosts
+- name: use cfssl-pki role playbook
+  hosts: sbxhosts
+  become: true
+
+  roles:
+    - role: cfssl-pki
