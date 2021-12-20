@@ -30,3 +30,10 @@
         mode: '0640'
       notify: restart_nginx
   when: cert_in_place.stat.exists
+
+- name: Configure Sonarqube without TLS
+  template:
+    src: roles/sonarqube-host/templates/sonar-nginx.conf.2
+    dest: "{{ nginx_path_conf }}/{{ sonar_user }}.conf"
+    mode: '0640'
+  when: not cert_in_place.stat.exists
