@@ -18,7 +18,8 @@ I am currently working on the following `roles`:
 Playbooks
 ---------
 
-* `cfssl-pki-role.yaml` - Provision a vm with a host certificate based on self-signed CA
+* `cfssl-pki-role.yaml` - Setup entire lab "PKI" and provision all hosts with a host certificate based on self-signed CA
+* `gen-cert.yaml` - Provision a vm with host cert + intermediate CA 
 * `gitlab-vm-role.yaml` -  Provision a vm with initial Gitlab-CE setup
 * `install-nextdns.yaml` - Provision a vm with NextDNS setup
 * `install-python-selinux-binds.yaml` - Make sure that a vm has neccessary python bindings if SELinux is in place
