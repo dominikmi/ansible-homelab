@@ -9,24 +9,19 @@
 
 - name: Check if the cert file exists
   stat:
-    path: {{ item }}
-  with_items:
-    - "{{ host_tls_cert_store }}/{{ ansible_hostname }}-peer.pem"
-    - "{{ host_tls_key_store }}/{{ ansible_hostname }}-peer-key.pem"
+    path: "{{ host_tls_cert_store }}/{{ ansible_hostname }}-peer.pem"
   register: cert_in_place
 
 - name: Configure TLS proxy for sonarqube
   block:
     - name: Generate TLS parameters
       command: "openssl dhparam -out {{ host_tls_parameters }} 2048"
-      register: tls_params
 
     - name: Configure TLS parameters
       template:
         src: roles/sonarqube-host/templates/tls-parameters.conf.j2
         dest: "{{ nginx_path_conf }}/tls-parameters.conf"
         mode: '0640'
-      when: tls_params | bool
 
     - name: Configure main config
       template:
@@ -34,4 +29,4 @@
         dest: "{{ nginx_path_conf }}/{{ sonar_user }}-ssl.conf"
         mode: '0640'
       notify: restart_nginx
-  when: cert_in_place | bool
+  when: cert_in_place.stat.exists
