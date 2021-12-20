@@ -13,7 +13,7 @@ I am currently working on the following `roles`:
 - `gitlab-vm`: Initial Gitlab-CE setup, (*works in progress*)
 - `livirt-vm` : to quickly spin up a KVM vm (FC34 or CentOS Stream 8) with static IP and further customized settings,
 - `nomad-cluster-node` : A Hashicorp Nomad cluster setup with Consul and Vault, initial configs provisioned, (*needs some refinements*)
-- `sonarqube-host` : SonarQube with postgresql and nginx. (*works in progress*)
+- `sonarqube-host` : SonarQube with postgresql and nginx.
 
 Playbooks
 ---------
