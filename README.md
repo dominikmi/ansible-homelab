@@ -26,6 +26,6 @@ Playbooks
 * `nomad-cluster-role.yaml` - Provision a vm with initial Nomad/Consul/Vault setup
 * `setup-sudouser.yaml` - Get your user account ready to work with Ansible
 * `setup-sq-role.yaml` - Provision a Sonarqube instance using sonarqube-host role
-* `setup-vm-role.yaml` - Spin up a KVM vm based on FC34 image
+* `setup-vm-role.yaml` - Spin up a KVM vm based on FC34/CentOS Stream 8 image
 * `update-labhosts.yaml` - Update labhost vm pool
 * `update-sbx.yaml` - Update sandbox vm pool
