@@ -1,6 +1,6 @@
 # dla leniwych..
 ---
-- hosts: all 
+- hosts: all
   tasks:
     - name: sudo without password for the defined ansible user
       ansible.builtin.copy:
