@@ -22,7 +22,7 @@
   ansible.builtin.systemd:
     name: postfix
     state: started
-    enabled: yes
+    enabled: true
 
 - name: Disable SELinux
   ansible.posix.selinux:
@@ -41,6 +41,7 @@
       gpgkey=https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey
              https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey/gitlab-gitlab-ce-3D645A26AB9FBD22.pub.gpg
       metadata_expire=300
+    mode: '0640'
 
 - name: Install gitlab-ce through dnf
   dnf:
