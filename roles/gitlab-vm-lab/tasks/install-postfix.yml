@@ -1,0 +1,13 @@
+---
+# Install postfix
+
+- name: Install Postfix
+  dnf:
+    name: postfix
+    state: present
+
+- name: Enable postfix
+  ansible.builtin.systemd:
+    name: postfix
+    state: started
+    enabled: true

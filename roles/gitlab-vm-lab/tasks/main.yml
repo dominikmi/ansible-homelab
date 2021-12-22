@@ -1,49 +1,14 @@
 ---
 # tasks file for gitlab-vm-lab
-- name: Check if GitLab is already installed.
-  stat: path=/usr/bin/gitlab-ctl
-  register: gitlab_file
 
-- name: Install python-selinux binding
-  dnf:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - python3-libselinux
-    - policycoreutils-python-utils
-    - python3-policycoreutils
+- name: Install prerequisites
+  include_tasks: prerequisites.yml
 
-- name: Install Postfix
-  dnf:
-    name: postfix
-    state: present
+- name: Install postfix
+  include_tasks: install-postfix.yml
 
-- name: Enable postfix
-  ansible.builtin.systemd:
-    name: postfix
-    state: started
-    enabled: true
+- name: Install nginx
+  include_tasks: install-nginx.yml
 
-- name: Disable SELinux
-  ansible.posix.selinux:
-    state: disabled
-
-- name: Create GitLab repository file
-  copy:
-    dest: "/etc/yum.repos.d/gitlab-ce.repo"
-    content: |
-      [gitlab-ce]
-      name=gitlab-ce
-      baseurl=https://packages.gitlab.com/gitlab/gitlab-ce/el/8/$basearch
-      repo_gpgcheck=1
-      gpgcheck=1
-      enabled=1
-      gpgkey=https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey
-             https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey/gitlab-gitlab-ce-3D645A26AB9FBD22.pub.gpg
-      metadata_expire=300
-    mode: '0640'
-
-- name: Install gitlab-ce through dnf
-  dnf:
-    name: gitlab-ce
-    state: present
+- name: Install Gitlab-ce
+  include_tasks: install-gitlab.yml

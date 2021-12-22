@@ -1,3 +1,16 @@
 ---
 # Gitlab repository
 gitlab_ce_install_script_url: 'https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh'
+gitlab_ce_baseurl: 'https://packages.gitlab.com/gitlab/gitlab-ce/el/8/$basearch'
+gitlab_ce_path_yum_repo: /etc/yum.repos.d/gitlab-ce.repo
+# nginx config path
+nginx_path_conf: /etc/nginx/conf.d
+
+# Local DNS setup
+host_local_dns: 192.168.130.1
+
+# TLS/SSL setup
+host_tls_cert_store: /etc/pki/tls/certs
+host_tls_key_store: /etc/pki/tls/private
+host_tls_port: 443
+host_tls_parameters: "{{ host_tls_cert_store }}/dhparameters.pem"

@@ -1,0 +1,39 @@
+---
+# install and configure nginx
+
+- name: Install nginx
+  dnf:
+    name: nginx
+    state: present
+    update_cache: true
+
+- name: Check if the cert file exists
+  stat:
+    path: "{{ host_tls_cert_store }}/{{ ansible_hostname }}-peer.pem"
+  register: cert_in_place
+
+- name: Configure TLS proxy for sonarqube
+  block:
+    - name: Generate TLS parameters
+      command: "openssl dhparam -out {{ host_tls_parameters }} 2048"
+
+    - name: Configure TLS parameters
+      template:
+        src: roles/sonarqube-host/templates/tls-parameters.conf.j2
+        dest: "{{ nginx_path_conf }}/tls-parameters.conf"
+        mode: '0640'
+
+    - name: Configure main config
+      template:
+        src: roles/gitlab-vm-lab/templates/gitlab-ssl-nginx.conf.j2
+        dest: "{{ nginx_path_conf }}/gitlab-ssl.conf"
+        mode: '0640'
+      notify: restart_nginx
+  when: cert_in_place.stat.exists
+
+- name: Configure Sonarqube without TLS
+  template:
+    src: roles/gitlab-vm-lab/templates/gitlab-nginx.conf.2
+    dest: "{{ nginx_path_conf }}/gitlab.conf"
+    mode: '0640'
+  when: not cert_in_place.stat.exists
