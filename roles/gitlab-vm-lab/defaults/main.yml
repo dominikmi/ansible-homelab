@@ -3,6 +3,12 @@
 gitlab_ce_install_script_url: 'https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh'
 gitlab_ce_baseurl: 'https://packages.gitlab.com/gitlab/gitlab-ce/el/8/$basearch'
 gitlab_ce_path_yum_repo: /etc/yum.repos.d/gitlab-ce.repo
+gitlab_web_port: 80
+gitlab_path_conf: /etc/gitlab
+gitlab_conf_file: gitlab.rb
+gitlab_host_domain: nukelab.home
+gitlab_external_url: "https://{{ ansible_hostname }}.{{ gitlab_host_domain }}"
+
 # nginx config path
 nginx_path_conf: /etc/nginx/conf.d
 

@@ -12,7 +12,7 @@
     path: "{{ host_tls_cert_store }}/{{ ansible_hostname }}-peer.pem"
   register: cert_in_place
 
-- name: Configure TLS proxy for sonarqube
+- name: Configure TLS proxy for Gitlab
   block:
     - name: Generate TLS parameters
       command: "openssl dhparam -out {{ host_tls_parameters }} 2048"
@@ -31,7 +31,7 @@
       notify: restart_nginx
   when: cert_in_place.stat.exists
 
-- name: Configure Sonarqube without TLS
+- name: Configure Gitlab without TLS
   template:
     src: roles/gitlab-vm-lab/templates/gitlab-nginx.conf.2
     dest: "{{ nginx_path_conf }}/gitlab.conf"
