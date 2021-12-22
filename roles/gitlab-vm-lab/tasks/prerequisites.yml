@@ -1,0 +1,14 @@
+---
+# Install all neccessary prerequisites
+- name: Disable SELinux
+  ansible.posix.selinux:
+    state: disabled
+
+- name: Install python-selinux binding
+  dnf:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python3-libselinux
+    - policycoreutils-python-utils
+    - python3-policycoreutils

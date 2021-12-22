@@ -1,0 +1,26 @@
+---
+# Gitlab installation procedure
+
+- name: Check if GitLab is already installed.
+  stat: path=/usr/bin/gitlab-ctl
+  register: gitlab_file
+
+- name: Create GitLab repository file
+  copy:
+    dest: "{{ gitlab_ce_path_yum_repo }}"
+    content: |
+      [gitlab-ce]
+      name=gitlab-ce
+      baseurl={{ gitlab_ce_baseurl }}
+      repo_gpgcheck=1
+      gpgcheck=1
+      enabled=1
+      gpgkey=https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey
+             https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey/gitlab-gitlab-ce-3D645A26AB9FBD22.pub.gpg
+      metadata_expire=300
+    mode: '0640'
+
+- name: Install gitlab-ce through dnf
+  dnf:
+    name: gitlab-ce
+    state: present
