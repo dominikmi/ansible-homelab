@@ -20,6 +20,10 @@
       metadata_expire=300
     mode: '0640'
 
+- name: Gitlab default password
+  environment:
+    GITLAB_ROOT_PASSWORD: "{{ gitlab_root_pass }}"
+
 - name: Install gitlab-ce through dnf
   dnf:
     name: gitlab-ce
