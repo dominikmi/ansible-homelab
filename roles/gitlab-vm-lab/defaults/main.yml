@@ -19,11 +19,11 @@ gitlab_path_data: /opt/gitlab
 gitlab_conf_file: gitlab.rb
 gitlab_host_domain: nukelab.home
 gitlab_external_url: "https://{{ ansible_hostname }}.{{ gitlab_host_domain }}"
-gitlab_timezone: "UTC"
+gitlab_timezone: "UTC+1"
 gitlab_bkp_keep_time: "604800"
 gitlab_default_theme: '2'
 
-# Gitlab TLS configuration
+# Gitlab TLS settings
 gitlab_redirect_http_to_https: true
 gitlab_ssl_cert: "{{ host_tls_cert_store }}/{{ ansible_hostname }}-peer.pem"
 gitlab_ssl_cert_key: "{{ host_tls_key_store }}/{{ ansible_hostname }}-peer-key.pem"
@@ -31,3 +31,11 @@ gitlab_ssl_cert_key: "{{ host_tls_key_store }}/{{ ansible_hostname }}-peer-key.p
 # Gitlab services settings
 gitlab_ldap_enabled: false
 gitlab_smtp_enabled: false
+gitlab_email_enabled: false
+gitlab_letsencrypt_enabled: false
+
+# Gitlab container registry settings
+gitlab_registry_enabled: true
+gitlab_registry_external_url: "{{ gitlab_external_url }}:9443"
+gitlab_registry_nginx_ssl_certificate: "{{ gitlab_ssl_cert }}"
+gitlab_registry_nginx_ssl_certificate_key: "{{ gitlab_ssl_cert_key }}"
