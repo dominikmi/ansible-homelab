@@ -6,7 +6,6 @@ host_local_dns: 192.168.130.1
 host_tls_cert_store: /etc/pki/tls/certs
 host_tls_key_store: /etc/pki/tls/private
 host_tls_port: 443
-host_tls_parameters: "{{ host_tls_cert_store }}/dhparameters.pem"
 
 # Gitlab repository
 gitlab_ce_install_script_url: 'https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh'
@@ -23,3 +22,12 @@ gitlab_external_url: "https://{{ ansible_hostname }}.{{ gitlab_host_domain }}"
 gitlab_timezone: "UTC"
 gitlab_bkp_keep_time: "604800"
 gitlab_default_theme: '2'
+
+# Gitlab TLS configuration
+gitlab_redirect_http_to_https: true
+gitlab_ssl_cert: "{{ host_tls_cert_store }}/{{ ansible_hostname }}-peer.pem"
+gitlab_ssl_cert_key: "{{ host_tls_key_store }}/{{ ansible_hostname }}-peer-key.pem"
+
+# Gitlab services settings
+gitlab_ldap_enabled: false
+gitlab_smtp_enabled: false
