@@ -1,8 +1,2 @@
 ---
 # handlers file for gitlab-vm-lab
-
-- name: restart_nginx
-  service:
-    name: nginx
-    state: restarted
-  register: nginx_restarted

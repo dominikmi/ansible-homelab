@@ -7,8 +7,5 @@
 - name: Install postfix
   include_tasks: install-postfix.yml
 
-- name: Install nginx
-  include_tasks: install-nginx.yml
-
 - name: Install Gitlab-ce
   include_tasks: install-gitlab.yml
