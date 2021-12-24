@@ -25,8 +25,4 @@
     name: gitlab-ce
     state: present
 
-- name: Provision gitlab config
-  template:
-    src: roles/gitlab-host-vm/templates/gitlab.rb.j2
-    dest: "{{ gitlab_path_conf }}/gitlab.rb"
-    mode: '0600'
+### TODO change template for regexp and replace in the default config
