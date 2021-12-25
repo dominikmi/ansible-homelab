@@ -20,7 +20,7 @@
       metadata_expire=300
     mode: '0640'
 
-- name: Gitlab default password
+- name: Gitlab def pwd
   environment:
     GITLAB_ROOT_PASSWORD: "{{ gitlab_root_pass }}"
 
