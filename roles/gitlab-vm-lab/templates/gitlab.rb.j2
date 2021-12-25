@@ -2,7 +2,7 @@
 external_url "{{ gitlab_external_url }}"
 
 # gitlab.yml configuration
-gitlab_rails['time_zone'] = "{{ gitlab_time_zone }}"
+gitlab_rails['time_zone'] = "{{ gitlab_timezone }}"
 gitlab_rails['backup_keep_time'] = {{ gitlab_bkp_keep_time }}
 gitlab_rails['gitlab_email_enabled'] = {{ gitlab_email_enabled | lower }}
 
@@ -20,10 +20,14 @@ git_data_dirs({"default" => {"path" => "{{ gitlab_path_data }}"} })
 # The directory where Gitlab backups will be stored
 gitlab_rails['backup_path'] = "{{ gitlab_path_bkp }}"
 
-# Disable ldap, smtp and letsencrypt
+# Disable ldap, smtp, email, grafana, prometheus, node_exporter and letsencrypt
 gitlab_rails['ldap_enabled'] = {{ gitlab_ldap_enabled | lower }}
 letsencrypt['enable'] = {{ gitlab_letsencrypt_enabled | lower }}
 gitlab_rails['smtp_enable'] = {{ gitlab_smtp_enabled | lower }}
+gitlab_rails['gitlab_email_enabled'] = {{ gitlab_email_enabled | lower }}
+prometheus_monitoring['enable'] = {{ gitlab_prometheus_enabled | lower }}
+grafana['enable'] = {{ gitlab_grafana_enabled | lower }}
+node_exporter['enable'] = {{ gitlab_node_exporter_enabled | lower }}
 
 # GitLab registry settings
 registry['enable'] = {{ gitlab_registry_enabled | lower }}

@@ -19,7 +19,8 @@ gitlab_web_port: 80
 gitlab_root_pass: "{{ gitlab_root_pwd }}"
 
 gitlab_path_conf: /etc/gitlab
-gitlab_path_data: /opt/gitlab
+gitlab_path_data: /opt/gitlab/data
+gitlab_path_bkp: /opt/gitlab/backups
 gitlab_conf_file: gitlab.rb
 gitlab_host_domain: nukelab.home
 gitlab_external_url: "https://{{ ansible_hostname }}.{{ gitlab_host_domain }}"
@@ -32,11 +33,14 @@ gitlab_redirect_http_to_https: true
 gitlab_ssl_cert: "{{ host_tls_cert_store }}/{{ ansible_hostname }}-peer.pem"
 gitlab_ssl_cert_key: "{{ host_tls_key_store }}/{{ ansible_hostname }}-peer-key.pem"
 
-# Gitlab services settings
+# Gitlab extra services settings
 gitlab_ldap_enabled: false
 gitlab_smtp_enabled: false
 gitlab_email_enabled: false
 gitlab_letsencrypt_enabled: false
+gitlab_prometheus_enabled: false
+gitlab_grafana_enabled: false
+gitlab_node_exporter_enabled: false
 
 # Gitlab container registry settings
 gitlab_registry_enabled: true

@@ -20,13 +20,33 @@
       metadata_expire=300
     mode: '0640'
 
-- name: Gitlab def pwd
-  environment:
-    GITLAB_ROOT_PASSWORD: "{{ gitlab_root_pass }}"
-
 - name: Install gitlab-ce through dnf
   dnf:
     name: gitlab-ce
     state: present
 
-### TODO change template for regexp and replace in the default config
+- name: Archive initial Gitlab config file
+  copy:
+    remote_src: true
+    src: "{{ gitlab_path_conf }}/{{ gitlab_conf_file }}"
+    dest: "{{ gitlab_path_conf }}/{{ gitlab_conf_file }}-ORIG"
+    mode: '0600'
+  register: origin_archived
+
+- name: Gitlab config changed
+  stat:
+    path: "{{ gitlab_path_conf }}/{{ gitlab_conf_file }}"
+  register: gitlab_config_changed
+
+- name: Gitlab initial config
+  template:
+    src: roles/gitlab-vm-lab/templates/gitlab.rb.j2
+    dest: /etc/gitlab/gitlab.rb
+    mode: '0600'
+  register: config_in_place
+  when: gitlab_config_changed | bool
+
+- name: Gitlab reconfigure
+  command: |
+    gitlab-ctl reconfigure
+  when: gitlab_config_changed | bool

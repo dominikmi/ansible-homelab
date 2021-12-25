@@ -1,5 +1,7 @@
-- name: Install Gitlab on a Fedora 34 Server
+- name: Install Gitlab on a Fedora 34/CentOS 8 server
   hosts: sbxhosts
+  environment:
+    GITLAB_ROOT_PASSWORD: "{{ gitlab_root_pwd }}"
   gather_facts: true
   become: true
   tasks:
