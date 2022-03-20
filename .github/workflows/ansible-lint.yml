@@ -10,6 +10,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Ansible Linter
-      uses: ansible/ansible-lint-action@master
+      uses: ansible/ansible-lint-action@main
       with:
-        targets: "."
+        targets: ""
+        override-deps: |
+          ansible==2.12
+          ansible-lint==4.2.0
