@@ -13,6 +13,3 @@ jobs:
       uses: ansible/ansible-lint-action@main
       with:
         targets: ""
-        override-deps: |
-          ansible==2.10.7
-          ansible-lint==4.2.0
