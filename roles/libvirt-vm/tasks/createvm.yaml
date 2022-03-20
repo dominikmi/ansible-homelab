@@ -64,7 +64,7 @@
         --ssh-inject {{ user }}:file:{{ user_pub_ssh_key }} \
         --uninstall cloud-init \
         --selinux-relabel
-      when: copy_results is changed and static_ip is true
+      when: static_ip is defined
 
     - name: Configure the vm image with DHCP if vm_ip is undefined
       command: |
@@ -75,7 +75,7 @@
         --ssh-inject {{ user }}:file:{{ user_pub_ssh_key }} \
         --uninstall cloud-init \
         --selinux-relabel
-      when: copy_results is changed and static_ip is false
+      when: copy_results is changed and static_ip is undefined
 
     - name: Define the VM
       community.libvirt.virt:
