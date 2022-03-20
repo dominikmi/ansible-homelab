@@ -14,5 +14,5 @@ jobs:
       with:
         targets: ""
         override-deps: |
-          ansible==2.12
+          ansible==2.10.7
           ansible-lint==4.2.0
