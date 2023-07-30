@@ -3,6 +3,8 @@
     - name: Update cache
       apt:
         update_cache: true
+        upgrade: dist
+        autoremove: true
 
     - name: Upgrade all packages on servers
       apt:
