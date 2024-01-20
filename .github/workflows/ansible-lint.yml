@@ -5,11 +5,11 @@ on: [push, pull_request]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: [ self-hosted ]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Ansible Linter
-      uses: ansible/ansible-lint-action@main
+      uses: ansible/ansible-lint@v6
       with:
         targets: ""
