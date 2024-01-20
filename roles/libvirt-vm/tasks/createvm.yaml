@@ -1,7 +1,7 @@
 # Create vm if it does not exist yet - createvm.yaml
 - name: Create VM if it does not exist
   block:
-    - name: Download fc35 base image
+    - name: Download fc39 base image
       get_url:
         url: "{{ fc_base_image_url }}"
         dest: "/tmp/{{ fc_base_image_name }}"

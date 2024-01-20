@@ -1,5 +1,5 @@
 - name: Deploys VM based on cloud image
-  hosts: localhost
+  hosts: ewok.nukelab.home
   gather_facts: true
   become: true
   tasks:
