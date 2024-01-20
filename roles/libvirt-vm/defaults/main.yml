@@ -13,5 +13,6 @@ vm_ram_mb: 2048
 vm_net: default
 cleanup_tmp: false
 user_pub_ssh_key: /home/{{ user }}/.ssh/id_rsa.pub
+vm_root_pass: myverysecurepwd
 resize_vm: false
 vm_os: fedora
